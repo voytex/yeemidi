@@ -1,3 +1,4 @@
+import colorama as CLR
 DISTINGUISH_COLOR = (234, 43, 255) 
 DEV = True
 YEEMIDI_CONFIGURATOR_TEXT = \
@@ -16,3 +17,8 @@ YEEMIDI_CONFIGURATOR_TEXT = \
                         __/ |                              
                        |___/                                                                    
 """
+LINE_UP = '\033[1A'
+LINE_CLEAR = '\x1b[2K'
+
+BLUE = lambda i: f"{CLR.Fore.BLUE}{i}{CLR.Style.RESET_ALL}"
+GREEN = lambda i: f"{CLR.Fore.GREEN}{i}{CLR.Style.RESET_ALL}" 
