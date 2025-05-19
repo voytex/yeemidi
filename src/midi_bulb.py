@@ -4,10 +4,10 @@
 from contextlib import contextmanager
 from typing import Any, Dict, Generator, List, Optional
 import consts as C
-if C.DEV:
-    import dev.yeelight_dummy as Y 
-else:
+if not C.DEV:
     import yeelight as Y
+else:
+    import dev.yeelight_dummy as Y
 import logging
 import yaml
 
@@ -15,62 +15,81 @@ import yaml
 logger = logging.getLogger(__name__)
 
 
-class WrappedBulb:
+class MidiBulb(Y.Bulb):
 
-    def __init__(self) -> None:
+    def __init__(self, bulb_dict: Dict) -> None:
         """
         """
-        self._bulb: Optional[Y.Bulb] = None
-        self._id: Optional[str] = None
-        self._ip: Optional[str] = None
+        super().__init__(bulb_dict["ip"])
+        self._ip: Optional[str] = bulb_dict["ip"]
+        self._id: Optional[str] = bulb_dict["capabilities"]["id"]
         self._sticker_id: Optional[str] = None
         self._group: Optional[int] = None
 
 
     def __repr__(self) -> str:
-        s = "WrappedBulb:\n"
+        s = "MidiBulb:\n"
         for k, v in self.__dict__.items():
             s += f"{k}: {v}\n"
         return s
 
 
-    @staticmethod
-    def from_yeelight(bulb: Y.Bulb) -> "WrappedBulb":
-        """
-        """
-        obj = WrappedBulb()
-        obj._bulb = bulb
-        obj._ip = bulb.get_properties()["ip"]
-        obj._id = bulb.get_properties()["id"]
-        return obj
+    @property
+    def id(self) -> str:
+        if self._id is None:
+            logger.error(f"Cannot get ID of bulb")
+            return "err"
+        return self._id
+    
 
+    @property
+    def ip(self) -> str:
+        if self._ip is None:
+            logger.error(f"Cannot get IP of bulb")
+            return "err"
+        return self._ip
+    
 
-    @staticmethod
-    def from_dict(dict: Dict) -> Optional["WrappedBulb"]:
-        """
-        :param dict: Dict to be converted to WrappedBulb.
-        :return: WrappedBulb or None if cannot be instantiated.
-        """
-        try: 
-            obj = WrappedBulb()
-            obj._bulb = Y.Bulb(dict["ip"])
-            obj._ip = dict["ip"]
-            obj._id = dict["capabilities"]["id"]
-            return obj
-        except Exception as e:
-            logger.error(f"Cannot instaniate WrappedBulb from dict: {dict}\n{str(e)}")
-            return None
+    @property
+    def sticker_id(self) -> str:
+        if self._sticker_id is None:
+            logger.error(f"Cannot get sticker ID of bulb")
+            return "err"
+        return self._sticker_id
+    
+
+    @sticker_id.setter
+    def sticker_id(self, sticker_id: str) -> None:
+        self._sticker_id = sticker_id
+        return
+    
+
+    @property
+    def group(self) -> int:
+        if self._group is None:
+            logger.error(f"Cannot get group of bulb")
+            return -1
+        return self._group
+    
+
+    @group.setter
+    def group(self, group: int) -> None:
+        if group < 0 or group > 16:
+            logger.error(f"Invalid group {group} for bulb {self.id}. Expected 0..16, saturating to 16.")
+            self._group = 16
+        self._group = group
+        return
         
 
     @staticmethod
-    def to_yaml(bulbs_list: List["WrappedBulb"], filename: str) -> None:
+    def to_yaml(bulbs_list: List["MidiBulb"], filename: str) -> None:
         """
         """
         yaml_list = []
         for bulb in bulbs_list:
             yaml_list.append({
-                "ip": bulb._ip,
-                "id": bulb._id,
+                "ip": bulb.ip,
+                "id": bulb.id,
                 "sticker_id": bulb._sticker_id,
                 "group": bulb._group,
             })
@@ -80,7 +99,7 @@ class WrappedBulb:
     
 
     @staticmethod
-    def from_yaml(filename: str) -> List["WrappedBulb"]:
+    def from_yaml(filename: str) -> List["MidiBulb"]:
         """
         """
         try:
@@ -89,66 +108,29 @@ class WrappedBulb:
         except Exception as e:
             logger.error(f"Cannot load yaml file: {filename}\n{str(e)}")
             print(f"Cannot load yaml file: {filename}\n{str(e)}")
+            return []
         bulbs_list = []
         for bulb in yaml_list:
-            obj = WrappedBulb()
-            obj._ip = bulb["ip"]
-            obj._id = bulb["id"]
+            obj = MidiBulb(bulb["ip"])
             obj._sticker_id = bulb["sticker_id"]
             obj._group = bulb["group"]
             bulbs_list.append(obj)
         return bulbs_list
-        
 
-    @property
-    def id(self) -> str:
-        if self._id: return self._id
-        else:
-            logger.error(f"Cannot access ID of this bulb")
-            return "err"
-        
-    @property
-    def ip(self) -> str:
-        if self._ip: return self._ip
-        else:
-            logger.error(f"Cannot access IP of this bulb")
-            return "err"
-        
-    @property
-    def sticker_id(self) -> str:
-        if self._sticker_id: return self._sticker_id
-        else:
-            logger.error(f"Cannot access sticker ID of this bulb")
-            return "err"
-        
-    @sticker_id.setter
-    def sticker_id(self, sticker_id: str) -> None:
-        self._sticker_id = sticker_id
-        return 
-    
-    @property
-    def group(self) -> int:
-        if self._group: return self._group
-        else:
-            logger.error(f"Cannot access group of this bulb")
-            return -1
-        
-    @group.setter
-    def group(self, group: int) -> None:
-        self._group = group
-        return
     
     @contextmanager
     def distinguish(self) -> Generator[None, Any, None]:
         """
         """
-        if self._bulb is None:
+        if self is None:
             logger.error(f"Cannot distinguish bulb {self._id}")
             return
-        self._bulb.set_brightness(100)
-        self._bulb.set_rgb(*C.DISTINGUISH_COLOR)
+        self.set_rgb(*C.DISTINGUISH_COLOR)
+        self.set_brightness(100)
+        self.turn_on()
         yield
-        self._bulb.set_brightness(0)
-        self._bulb.set_rgb(0, 0, 0)
+        self.turn_off()
+        self.set_brightness(0)
+        self.set_rgb(0, 0, 0)
         return
         
