@@ -15,34 +15,42 @@ import yaml
 logger = logging.getLogger(__name__)
 
 
-discovered_dict: Optional[Dict] = None
+__discovered: Optional[Dict] = None
+
+
+def get_discovered() -> List[Dict]:
+    """
+    Returns the discovered dictionary of bulbs.
+    If it is not initialized, it will discover the bulbs.
+    """
+    global __discovered
+    if __discovered is None:
+        try:
+            __discovered = Y.discover_bulbs()
+        except Exception as e:
+            logger.critical(f"Cannot discover bulbs: {str(e)}")
+            raise ValueError(f"Cannot discover bulbs: {str(e)}")
+    return __discovered
 
 
 class MidiBulb(Y.Bulb):
 
     @staticmethod
-    def get_ip_from_id(bulb_id: str) -> Optional[str]:
-        global discovered_dict
-        if discovered_dict is None:
-            try:
-                discovered_dict = Y.discover_bulbs()
-            except Exception as e:
-                logger.error(f"Cannot discover bulbs: {str(e)}")
-                return None
-        assert discovered_dict is not None
-        for bulb in discovered_dict:
+    def get_ip_from_id(bulb_id: str) -> str:
+        for bulb in get_discovered():
             if bulb["capabilities"]["id"] == bulb_id:
                 return bulb["ip"]
-        logger.error(f"Bulb with ID {bulb_id} not found.")
-        return None
+        logger.critical(f"Bulb with ID {bulb_id} not found.\nRun wizard_configuration.py again.")
+        raise ValueError(f"Bulb with ID {bulb_id} not found.\nRun wizard_configuration.py again.")
 
-    def __init__(self, bulb_dict: Dict) -> None:
+
+    def __init__(self, bulb_id: str) -> None:
         """
         """
-        bulb_ip = MidiBulb.get_ip_from_id(bulb_dict["capabilities"]["id"])
+        bulb_ip = MidiBulb.get_ip_from_id(bulb_id)
         super().__init__(bulb_ip)
-        self._ip: Optional[str] = bulb_ip
-        self._id: Optional[str] = bulb_dict["capabilities"]["id"]
+        self._ip: str = bulb_ip
+        self._id: str = bulb_id
         self._sticker_id: Optional[str] = None
         self._group: Optional[int] = None
 
@@ -60,14 +68,6 @@ class MidiBulb(Y.Bulb):
             logger.error(f"Cannot get ID of bulb")
             return "err"
         return self._id
-    
-
-    @property
-    def ip(self) -> str:
-        if self._ip is None:
-            logger.error(f"Cannot get IP of bulb")
-            return "err"
-        return self._ip
     
 
     @property
@@ -108,7 +108,6 @@ class MidiBulb(Y.Bulb):
         yaml_list = []
         for bulb in bulbs_list:
             yaml_list.append({
-                "ip": bulb.ip,
                 "id": bulb.id,
                 "sticker_id": bulb._sticker_id,
                 "group": bulb._group,
@@ -131,7 +130,8 @@ class MidiBulb(Y.Bulb):
             return []
         bulbs_list = []
         for bulb in yaml_list:
-            obj = MidiBulb(bulb["ip"])
+            # TODO IP handling
+            obj = MidiBulb(bulb["id"])
             obj._sticker_id = bulb["sticker_id"]
             obj._group = bulb["group"]
             bulbs_list.append(obj)
@@ -143,18 +143,10 @@ class MidiBulb(Y.Bulb):
         """
         Discover available bulbs and return a list of MidiBulb objects.
         """
-        global discovered_dict
-        if discovered_dict is None:
-            try:
-                discovered_dict = Y.discover_bulbs()
-            except Exception as e:
-                logger.error(f"Cannot discover bulbs: {str(e)}")
-                return []
-        assert discovered_dict is not None
-        bulbs = []
-        for bulb in discovered_dict:
-            bulbs.append(MidiBulb(bulb))
-        return bulbs
+        midi_bulbs = []
+        for yeelight_bulb in get_discovered():
+            midi_bulbs.append(MidiBulb(yeelight_bulb["capabilities"]["id"]))
+        return midi_bulbs
 
     
     @contextmanager
@@ -165,7 +157,7 @@ class MidiBulb(Y.Bulb):
         :note: Utilizes `with` statement.
         """
         if self is None:
-            logger.error(f"Cannot distinguish bulb {self._id}")
+            logger.error(f"Cannot distinguish bulb {self.id}")
             return
         self.set_rgb(*C.DISTINGUISH_COLOR)
         self.set_brightness(100)

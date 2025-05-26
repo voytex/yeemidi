@@ -50,7 +50,7 @@ def main() -> None:
         if b is None:
             continue
         with b.distinguish():
-            con.print(f"Setting bulb {C.BLUE(b.id)} with {C.BLUE(b.ip)}:")
+            con.print(f"Setting bulb {C.BLUE(b.id)}:")
             con.print(f"This bulb shall have following 'sticker_id':")
             b.sticker_id = con.input_str()
             con.print("This bulb shall be assigned to the following 'group':")
