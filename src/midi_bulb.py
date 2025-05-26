@@ -15,16 +15,33 @@ import yaml
 logger = logging.getLogger(__name__)
 
 
-discovered_bulbs: Optional[List["MidiBulb"]] = None
+discovered_dict: Optional[Dict] = None
 
 
 class MidiBulb(Y.Bulb):
 
+    @staticmethod
+    def get_ip_from_id(bulb_id: str) -> Optional[str]:
+        global discovered_dict
+        if discovered_dict is None:
+            try:
+                discovered_dict = Y.discover_bulbs()
+            except Exception as e:
+                logger.error(f"Cannot discover bulbs: {str(e)}")
+                return None
+        assert discovered_dict is not None
+        for bulb in discovered_dict:
+            if bulb["capabilities"]["id"] == bulb_id:
+                return bulb["ip"]
+        logger.error(f"Bulb with ID {bulb_id} not found.")
+        return None
+
     def __init__(self, bulb_dict: Dict) -> None:
         """
         """
-        super().__init__(bulb_dict["ip"])
-        self._ip: Optional[str] = bulb_dict["ip"]
+        bulb_ip = MidiBulb.get_ip_from_id(bulb_dict["capabilities"]["id"])
+        super().__init__(bulb_ip)
+        self._ip: Optional[str] = bulb_ip
         self._id: Optional[str] = bulb_dict["capabilities"]["id"]
         self._sticker_id: Optional[str] = None
         self._group: Optional[int] = None
@@ -119,25 +136,25 @@ class MidiBulb(Y.Bulb):
             obj._group = bulb["group"]
             bulbs_list.append(obj)
         return bulbs_list
-    
 
+    
     @staticmethod
     def discover() -> List["MidiBulb"]:
         """
-        Discover Yeelight bulbs on the network.
-
-        :return: List of discovered MidiBulb objects. 
-           Empty list if no bulbs found or an error occurred.
+        Discover available bulbs and return a list of MidiBulb objects.
         """
-        try:
-            yeelight_bulbs = Y.discover_bulbs()
-            discovered_bulbs = []
-            for bulb in yeelight_bulbs:
-                discovered_bulbs.append(MidiBulb(bulb))
-        except Exception as e:
-            logger.error(f"Error discovering bulbs: {str(e)}")
-            return []
-        return discovered_bulbs
+        global discovered_dict
+        if discovered_dict is None:
+            try:
+                discovered_dict = Y.discover_bulbs()
+            except Exception as e:
+                logger.error(f"Cannot discover bulbs: {str(e)}")
+                return []
+        assert discovered_dict is not None
+        bulbs = []
+        for bulb in discovered_dict:
+            bulbs.append(MidiBulb(bulb))
+        return bulbs
 
     
     @contextmanager
@@ -159,3 +176,5 @@ class MidiBulb(Y.Bulb):
         self.set_rgb(0, 0, 0)
         return
         
+
+    

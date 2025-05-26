@@ -25,9 +25,9 @@ def main() -> None:
     os.system("clear" if os.name == "posix" else "cls")
     print(C.GREEN(C.YEEMIDI_LIGHTCHECK_TEXT))
     con = CON.Console()
-    try:
-        with open(args.file, "r") as f:
-            bulb_list = 
+
+        
+            
             
 
 
