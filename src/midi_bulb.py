@@ -121,6 +121,9 @@ class MidiBulb(Y.Bulb):
     @contextmanager
     def distinguish(self) -> Generator[None, Any, None]:
         """
+        Helper function, that lights up the bulb for context.
+
+        :note: Utilizes `with` statement.
         """
         if self is None:
             logger.error(f"Cannot distinguish bulb {self._id}")
