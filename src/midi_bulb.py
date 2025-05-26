@@ -15,6 +15,9 @@ import yaml
 logger = logging.getLogger(__name__)
 
 
+discovered_bulbs: Optional[List["MidiBulb"]] = None
+
+
 class MidiBulb(Y.Bulb):
 
     def __init__(self, bulb_dict: Dict) -> None:
@@ -116,6 +119,25 @@ class MidiBulb(Y.Bulb):
             obj._group = bulb["group"]
             bulbs_list.append(obj)
         return bulbs_list
+    
+
+    @staticmethod
+    def discover() -> List["MidiBulb"]:
+        """
+        Discover Yeelight bulbs on the network.
+
+        :return: List of discovered MidiBulb objects. 
+           Empty list if no bulbs found or an error occurred.
+        """
+        try:
+            yeelight_bulbs = Y.discover_bulbs()
+            discovered_bulbs = []
+            for bulb in yeelight_bulbs:
+                discovered_bulbs.append(MidiBulb(bulb))
+        except Exception as e:
+            logger.error(f"Error discovering bulbs: {str(e)}")
+            return []
+        return discovered_bulbs
 
     
     @contextmanager

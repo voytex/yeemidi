@@ -6,9 +6,7 @@ from typing import List
 import consts as C
 import console as CON
 if C.DEV:
-    def discover_bulbs():
-        time.sleep(1)
-        return [{"capabilities": {"id": "0x0000000002dfb19a"}, "ip": "10.10.0.1"},{"capabilities": {"id": "0x0000000002dfb13f"}, "ip": "10.10.0.2"}]
+    from  dev.yeelight_dummy import discover_bulbs
 else:
     from yeelight import discover_bulbs
 import colorama as CLR
@@ -40,7 +38,7 @@ def main() -> None:
     #
     # Bulbs discovery
     con.print("Querying for Yeelight bulbs...")
-    available_bulbs = discover_bulbs()
+    available_bulbs = MidiBulb.discover()
     con.reprint(f"Found {CLR.Fore.BLUE}{len(available_bulbs)}{CLR.Style.RESET_ALL} bulb(s).")
     time.sleep(3)
     if len(available_bulbs) == 0:
@@ -48,8 +46,7 @@ def main() -> None:
         return
     export_bulbs: List[MidiBulb] = list()
     con.refresh()
-    for bulb in available_bulbs:
-        b = MidiBulb(bulb)
+    for b in available_bulbs:
         if b is None:
             continue
         with b.distinguish():
