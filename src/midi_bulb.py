@@ -2,31 +2,37 @@
 
 """
 from contextlib import contextmanager
-from typing import Any, Dict, Generator, List, Optional
+from typing import Any, Dict, Generator, List, Optional, Sequence
 import consts as C
-if not C.DEV:
-    import yeelight as Y
-else:
-    import dev.yeelight_dummy as Y
+#import yeelight as Y
+import dev.yeelight_dummy as Y  # For development purposes, replace with actual yeelight import in production
 import logging
 import yaml
 
 
 logger = logging.getLogger(__name__)
-
-
+CAPABILITIES = "capabilities"
+ID = "id"
+IP = "ip"
 __discovered: Optional[Dict] = None
 
 
 def get_discovered() -> List[Dict]:
     """
-    Returns the discovered dictionary of bulbs.
-    If it is not initialized, it will discover the bulbs.
+    Returns the discovered list of dictionaries describing bulbs.
+    Else, queries the network for available bulbs.
+
+    :return: List of Dicts or None
     """
     global __discovered
     if __discovered is None:
         try:
+            logger.info("Discovering bulbs...")
             __discovered = Y.discover_bulbs()
+            if len(__discovered) < 1:
+                raise ValueError("No bulbs discovered.")
+            for bulb in __discovered:
+                logger.info(f"Discovered bulb: {bulb[CAPABILITIES][ID]} at {bulb[IP]}")
         except Exception as e:
             logger.critical(f"Cannot discover bulbs: {str(e)}")
             raise ValueError(f"Cannot discover bulbs: {str(e)}")
@@ -38,7 +44,7 @@ class MidiBulb(Y.Bulb):
     @staticmethod
     def get_ip_from_id(bulb_id: str) -> str:
         for bulb in get_discovered():
-            if bulb["capabilities"]["id"] == bulb_id:
+            if bulb[CAPABILITIES][ID] == bulb_id:
                 return bulb["ip"]
         logger.critical(f"Bulb with ID {bulb_id} not found.\nRun wizard_configuration.py again.")
         raise ValueError(f"Bulb with ID {bulb_id} not found.\nRun wizard_configuration.py again.")
@@ -49,7 +55,7 @@ class MidiBulb(Y.Bulb):
         """
         bulb_ip = MidiBulb.get_ip_from_id(bulb_id)
         super().__init__(bulb_ip)
-        self._ip: str = bulb_ip
+        self._ip: str = bulb_ip # TODO might not be needed
         self._id: str = bulb_id
         self._sticker_id: Optional[str] = None
         self._group: Optional[int] = None
@@ -145,7 +151,7 @@ class MidiBulb(Y.Bulb):
         """
         midi_bulbs = []
         for yeelight_bulb in get_discovered():
-            midi_bulbs.append(MidiBulb(yeelight_bulb["capabilities"]["id"]))
+            midi_bulbs.append(MidiBulb(yeelight_bulb[CAPABILITIES][ID]))
         return midi_bulbs
 
     
@@ -159,6 +165,7 @@ class MidiBulb(Y.Bulb):
         if self is None:
             logger.error(f"Cannot distinguish bulb {self.id}")
             return
+        logger.info(f"Distinguishing bulb {self.id} with sticker ID {self.sticker_id} in group {self.group}.")
         self.set_rgb(*C.DISTINGUISH_COLOR)
         self.set_brightness(100)
         self.turn_on()
@@ -167,6 +174,71 @@ class MidiBulb(Y.Bulb):
         self.set_brightness(0)
         self.set_rgb(0, 0, 0)
         return
+    
+
+class MidiBulbCollection:
+    class _Group(Y.Bulb):
+        def add(self, bulbs: Sequence[MidiBulb], ensure_music_mode: bool = True) -> None:
+            self.bulbs: List[MidiBulb] = []
+            for bulb in bulbs:
+                if ensure_music_mode:
+                    bulb.start_music()
+                self.bulbs.append(bulb)
+            return
+        
+        def __init__(self) -> None:
+            pass
+
+        def __getattr__(self, name: str):
+            def method(*args, **kwargs):
+                for bulb in self.bulbs:
+                    attr = getattr(bulb, name)
+                    if callable(attr):
+                        attr(*args, **kwargs)
+                    else:
+                        logger.error(f"Attribute {name} is not callable on {bulb.id}.")
+            return method
+
+        def __iter__(self):
+            return iter(self.bulbs)
+        
+        def __len__(self) -> int:
+            return len(self.bulbs)
+        
+        def __getitem__(self, index: int) -> MidiBulb:
+            return self.bulbs[index]
+        
+        @contextmanager
+        def distinguish(self) -> Generator[None, Any, None]:
+            logger.info(f"Distinguishing group.")
+            for bulb in self.bulbs:
+                bulb.set_rgb(*C.DISTINGUISH_COLOR)
+                bulb.set_brightness(100)
+                bulb.turn_on()
+            yield
+            for bulb in self.bulbs:
+                bulb.turn_off()
+                bulb.set_brightness(0)
+                bulb.set_rgb(0, 0, 0)
+            return
+        
+    
+    def __init__(self, no_of_groups: int) -> None:
+        if no_of_groups < 1 or no_of_groups > 16:
+            logger.error(f"Invalid number of groups: {no_of_groups}. Expected 1..16, saturating to 16.")
+            no_of_groups = 16
+        self.group: List[MidiBulbCollection._Group] = no_of_groups * [MidiBulbCollection._Group()]
+
+
+    def __getitem__(self, group_no: int) -> _Group:
+        """
+        Returns the list of MidiBulbs in the specified group.
+        """
+        return self.group[group_no]
+        
+
+
+
         
 
     

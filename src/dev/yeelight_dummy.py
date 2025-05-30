@@ -20,5 +20,11 @@ def discover_bulbs():
     Dummy function to simulate bulb discovery.
     """
     logger.info("Discovering bulbs...")
-    time.sleep(1)
-    return [{"capabilities": {"id": "0x0000000002dfb19a"}, "ip": "10.10.0.1"},{"capabilities": {"id": "0x0000000002dfb13f"}, "ip": "10.10.0.2"}]
+
+    return [
+        {"capabilities": {"id": "0x0000000002dfb19a"}, "ip": "10.10.0.1"},
+        {"capabilities": {"id": "0x0000000002dfb13f"}, "ip": "10.10.0.2"},
+        {"capabilities": {"id": "0x0000000002dfb1a0"}, "ip": "10.10.0.4"},
+        {"capabilities": {"id": "0x0000000002dfb1a1"}, "ip": "10.10.0.44"},
+        {"capabilities": {"id": "0x0000000002dfb1a2"}, "ip": "10.10.0.2"}
+    ]
