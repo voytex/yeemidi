@@ -1,6 +1,7 @@
 import colorama as CLR
 DISTINGUISH_COLOR = (234, 43, 255) 
-DEV = True
+DEV = False
+GROUP_COUNT = 16
 YEEMIDI_CONFIGURATOR_TEXT = \
 """
                            _     _ _                       

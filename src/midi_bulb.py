@@ -1,11 +1,11 @@
 """
 
 """
-from contextlib import contextmanager
+from contextlib import contextmanager, suppress
 from typing import Any, Dict, Generator, List, Optional, Sequence
 import consts as C
-#import yeelight as Y
-import dev.yeelight_dummy as Y  # For development purposes, replace with actual yeelight import in production
+import yeelight as Y
+# import dev.yeelight_dummy as Y  # For development purposes, replace with actual yeelight import in production
 import logging
 import yaml
 
@@ -52,6 +52,12 @@ class MidiBulb(Y.Bulb):
 
     def __init__(self, bulb_id: str) -> None:
         """
+        MidiBuld class wraps around Yeelight's Bulb class, 
+        providing additional functionality.\n
+        It hides the IP address of the bulbs and allows
+        to reach them just by their ID.
+
+        :param bulb_id: ID of the bulb to connect to.
         """
         bulb_ip = MidiBulb.get_ip_from_id(bulb_id)
         super().__init__(bulb_ip)
@@ -62,9 +68,7 @@ class MidiBulb(Y.Bulb):
 
 
     def __repr__(self) -> str:
-        s = "MidiBulb:\n"
-        for k, v in self.__dict__.items():
-            s += f"{k}: {v}\n"
+        s = f"MidiBulb: {self.id=}, {self._ip=}, {self.sticker_id=}, {self.group=}\n"
         return s
 
 
@@ -100,49 +104,12 @@ class MidiBulb(Y.Bulb):
 
     @group.setter
     def group(self, group: int) -> None:
-        if group < 0 or group > 16:
-            logger.error(f"Invalid group {group} for bulb {self.id}. Expected 0..16, saturating to 16.")
-            self._group = 16
+        if (group < 0) or (group > C.GROUP_COUNT - 1):
+            logger.error(f"Invalid group {group} for bulb {self.id}. Expected 0..{C.GROUP_COUNT - 1}, saturating to {C.GROUP_COUNT - 1}.")
+            self._group = C.GROUP_COUNT - 1
         self._group = group
         return
-        
-
-    @staticmethod
-    def to_yaml(bulbs_list: List["MidiBulb"], filename: str) -> None:
-        """
-        """
-        yaml_list = []
-        for bulb in bulbs_list:
-            yaml_list.append({
-                "id": bulb.id,
-                "sticker_id": bulb._sticker_id,
-                "group": bulb._group,
-            })
-        with open(filename, "w") as f:
-            yaml.dump(yaml_list, f)
-        return
     
-
-    @staticmethod
-    def from_yaml(filename: str) -> List["MidiBulb"]:
-        """
-        """
-        try:
-            with open(filename, "r") as f:
-                yaml_list = yaml.safe_load(f)
-        except Exception as e:
-            logger.error(f"Cannot load yaml file: {filename}\n{str(e)}")
-            print(f"Cannot load yaml file: {filename}\n{str(e)}")
-            return []
-        bulbs_list = []
-        for bulb in yaml_list:
-            # TODO IP handling
-            obj = MidiBulb(bulb["id"])
-            obj._sticker_id = bulb["sticker_id"]
-            obj._group = bulb["group"]
-            bulbs_list.append(obj)
-        return bulbs_list
-
     
     @staticmethod
     def discover() -> List["MidiBulb"]:
@@ -177,7 +144,19 @@ class MidiBulb(Y.Bulb):
     
 
 class MidiBulbCollection:
+    """
+    This class represents a collection of MidiBulbs.
+    It allows to group MidiBulbs together and perform operations on the whole group.
+    """
     class _Group(Y.Bulb):
+        # Inheritance from Y.Bulb is just for
+        # IntellliSense to work properly.
+        
+        def __init__(self) -> None:
+            # Overload default constructor, so that 
+            # no Yeelight Bulb is created.
+            pass
+
         def add(self, bulbs: Sequence[MidiBulb], ensure_music_mode: bool = True) -> None:
             self.bulbs: List[MidiBulb] = []
             for bulb in bulbs:
@@ -186,17 +165,17 @@ class MidiBulbCollection:
                 self.bulbs.append(bulb)
             return
         
-        def __init__(self) -> None:
-            pass
 
         def __getattr__(self, name: str):
             def method(*args, **kwargs):
                 for bulb in self.bulbs:
                     attr = getattr(bulb, name)
                     if callable(attr):
-                        attr(*args, **kwargs)
+                        ret = attr(*args, **kwargs)
+                        return ret
                     else:
                         logger.error(f"Attribute {name} is not callable on {bulb.id}.")
+                        return None
             return method
 
         def __iter__(self):
@@ -204,9 +183,6 @@ class MidiBulbCollection:
         
         def __len__(self) -> int:
             return len(self.bulbs)
-        
-        def __getitem__(self, index: int) -> MidiBulb:
-            return self.bulbs[index]
         
         @contextmanager
         def distinguish(self) -> Generator[None, Any, None]:
@@ -223,19 +199,51 @@ class MidiBulbCollection:
             return
         
     
-    def __init__(self, no_of_groups: int) -> None:
-        if no_of_groups < 1 or no_of_groups > 16:
-            logger.error(f"Invalid number of groups: {no_of_groups}. Expected 1..16, saturating to 16.")
-            no_of_groups = 16
-        self.group: List[MidiBulbCollection._Group] = no_of_groups * [MidiBulbCollection._Group()]
+    def __init__(self) -> None:
+        self.groups: List[MidiBulbCollection._Group] = C.GROUP_COUNT * [MidiBulbCollection._Group()]
 
 
     def __getitem__(self, group_no: int) -> _Group:
-        """
-        Returns the list of MidiBulbs in the specified group.
-        """
-        return self.group[group_no]
+        return self.groups[group_no]
+    
+
+    def __repr__(self) -> str:
+        s = ""
+        for group in self.groups:
+            for bulb in group:
+                s += str(bulb) 
+        return s
+    
         
+    def dump_to_yaml(self, filename: str) -> None:
+        yaml_list = []
+        for group in self.groups:
+            for bulb in group:
+                yaml_list.append({
+                    "id": bulb.id,
+                    "sticker_id": bulb.sticker_id,
+                    "group": bulb.group
+                })
+        with open(filename, "w") as f:
+            yaml.dump(yaml_list, f)
+        return
+    
+    
+    def load_from_yaml(self, filename: str) -> None:
+        # TODO AI nonsense
+        try:
+            with open(filename, "r") as f:
+                yaml_list = yaml.safe_load(f)
+            for bulb in yaml_list:
+                bulb_id = bulb["id"]
+                group_no = bulb["group"]
+                sticker_id = bulb["sticker_id"]
+                midi_bulb = MidiBulb(bulb_id)
+                midi_bulb.sticker_id = sticker_id
+                self.groups[group_no].add([midi_bulb])
+        except Exception as e:
+            logger.error(f"Cannot load configuration from {filename}: {str(e)}")
+            raise ValueError(f"Cannot load configuration from {filename}: {str(e)}")
 
 
 
