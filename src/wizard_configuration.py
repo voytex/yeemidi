@@ -10,7 +10,7 @@ if C.DEV:
 else:
     from yeelight import discover_bulbs
 import colorama as CLR
-from midi_bulb import MidiBulb
+from midi_bulb import MidiBulb, MidiBulbCollection
 
 
 logger = logging.getLogger()
@@ -44,7 +44,7 @@ def main() -> None:
     if len(available_bulbs) == 0:
         con.print(f"{CLR.Fore.RED}No bulbs found. Exiting...{CLR.Style.RESET_ALL}")
         return
-    export_bulbs: List[MidiBulb] = list()
+    bulb_collection = MidiBulbCollection()
     con.refresh()
     for b in available_bulbs:
         if b is None:
@@ -55,9 +55,11 @@ def main() -> None:
             b.sticker_id = con.input_str()
             con.print("This bulb shall be assigned to the following 'group':")
             b.group = int(con.input_int())
-            export_bulbs.append(b)
+            bulb_collection[b.group].add(b, ensure_music_mode=False)
             con.refresh()
-    MidiBulb.to_yaml(export_bulbs, args.file)
+    print(id(bulb_collection[0]), id(bulb_collection[1]))
+    bulb_collection.dump_to_yaml(args.file)
+    
     con.print(C.GREEN(f"Configuration exported to {C.BLUE(args.file)}."))
     
 

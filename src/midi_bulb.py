@@ -145,75 +145,11 @@ class MidiBulb(Y.Bulb):
 
 class MidiBulbCollection:
     """
-    This class represents a collection of MidiBulbs.
-    It allows to group MidiBulbs together and perform operations on the whole group.
+    This class represents a collection of MidiBulbs within a single group
     """
-    class _Group(Y.Bulb):
-        # Inheritance from Y.Bulb is just for
-        # IntellliSense to work properly.
-        
-        def __init__(self) -> None:
-            # Overload default constructor, so that 
-            # no Yeelight Bulb is created.
-            pass
+    def __init__(self): 
+        self.bulbs: List[MidiBulb] = []
 
-        def add(self, bulbs: Sequence[MidiBulb], ensure_music_mode: bool = True) -> None:
-            self.bulbs: List[MidiBulb] = []
-            for bulb in bulbs:
-                if ensure_music_mode:
-                    bulb.start_music()
-                self.bulbs.append(bulb)
-            return
-        
-
-        def __getattr__(self, name: str):
-            def method(*args, **kwargs):
-                for bulb in self.bulbs:
-                    attr = getattr(bulb, name)
-                    if callable(attr):
-                        ret = attr(*args, **kwargs)
-                        return ret
-                    else:
-                        logger.error(f"Attribute {name} is not callable on {bulb.id}.")
-                        return None
-            return method
-
-        def __iter__(self):
-            return iter(self.bulbs)
-        
-        def __len__(self) -> int:
-            return len(self.bulbs)
-        
-        @contextmanager
-        def distinguish(self) -> Generator[None, Any, None]:
-            logger.info(f"Distinguishing group.")
-            for bulb in self.bulbs:
-                bulb.set_rgb(*C.DISTINGUISH_COLOR)
-                bulb.set_brightness(100)
-                bulb.turn_on()
-            yield
-            for bulb in self.bulbs:
-                bulb.turn_off()
-                bulb.set_brightness(0)
-                bulb.set_rgb(0, 0, 0)
-            return
-        
-    
-    def __init__(self) -> None:
-        self.groups: List[MidiBulbCollection._Group] = C.GROUP_COUNT * [MidiBulbCollection._Group()]
-
-
-    def __getitem__(self, group_no: int) -> _Group:
-        return self.groups[group_no]
-    
-
-    def __repr__(self) -> str:
-        s = ""
-        for group in self.groups:
-            for bulb in group:
-                s += str(bulb) 
-        return s
-    
         
     def dump_to_yaml(self, filename: str) -> None:
         yaml_list = []
