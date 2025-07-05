@@ -60,7 +60,7 @@ class MidiBulb(Y.Bulb):
         :param bulb_id: ID of the bulb to connect to.
         """
         bulb_ip = MidiBulb.get_ip_from_id(bulb_id)
-        super().__init__(bulb_ip)
+        super().__init__(bulb_ip, effect="sudden")
         self._ip: str = bulb_ip # TODO might not be needed
         self._id: str = bulb_id
         self._sticker_id: Optional[str] = None
@@ -133,53 +133,62 @@ class MidiBulb(Y.Bulb):
             logger.error(f"Cannot distinguish bulb {self.id}")
             return
         logger.info(f"Distinguishing bulb {self.id} with sticker ID {self.sticker_id} in group {self.group}.")
+        self.turn_on()
         self.set_rgb(*C.DISTINGUISH_COLOR)
         self.set_brightness(100)
-        self.turn_on()
         yield
         self.turn_off()
-        self.set_brightness(0)
-        self.set_rgb(0, 0, 0)
         return
     
 
-class MidiBulbCollection:
-    """
-    This class represents a collection of MidiBulbs within a single group
-    """
-    def __init__(self): 
-        self.bulbs: List[MidiBulb] = []
+def to_yaml(grouped_bulbs: Dict[int, List[MidiBulb]], filename: str = "config.yml") -> None:
+        yaml_formated = []
+        for bulbs in grouped_bulbs.values():
+            for bulb in bulbs:
+                yaml_formated.append(
+                    {
+                        "bulb_id": bulb.id,
+                        "sticker": bulb.sticker_id,
+                        "group": bulb.group
+                    }
+                )
+        with open(filename, "w+") as f:
+            yaml.dump(yaml_formated, f)
 
-        
-    def dump_to_yaml(self, filename: str) -> None:
-        yaml_list = []
-        for group in self.groups:
-            for bulb in group:
-                yaml_list.append({
-                    "id": bulb.id,
-                    "sticker_id": bulb.sticker_id,
-                    "group": bulb.group
-                })
-        with open(filename, "w") as f:
-            yaml.dump(yaml_list, f)
-        return
+
+def from_yaml(filename: str = "config.yml") -> Dict[int, List[MidiBulb]]:
+    with open(filename, "r") as f:
+        yaml_formated = yaml.safe_load(f)
+    ret: Dict[int, List[MidiBulb]] = {}
+    for yaml_bulb in yaml_formated:
+        bulb_id = yaml_bulb["bulb_id"]
+        sticker_id = yaml_bulb["sticker"]
+        group = int(yaml_bulb["group"])
+        if group not in ret.keys():
+            ret[group] = []
+        midibulb = MidiBulb(bulb_id)
+        midibulb.sticker_id = sticker_id
+        midibulb.group = group
+        ret[group].append(midibulb)
+    return ret
+
+
+@contextmanager
+def distinguish_group(bulbs: List[MidiBulb]) -> Generator[None, Any, None]:
+    for bulb in bulbs:
+        bulb.turn_on()
+        bulb.set_rgb(*C.DISTINGUISH_COLOR)
+        bulb.set_brightness(100)
+    yield
+    for bulb in bulbs:
+        bulb.turn_off()
+
+
+
+
+
+
     
-    
-    def load_from_yaml(self, filename: str) -> None:
-        # TODO AI nonsense
-        try:
-            with open(filename, "r") as f:
-                yaml_list = yaml.safe_load(f)
-            for bulb in yaml_list:
-                bulb_id = bulb["id"]
-                group_no = bulb["group"]
-                sticker_id = bulb["sticker_id"]
-                midi_bulb = MidiBulb(bulb_id)
-                midi_bulb.sticker_id = sticker_id
-                self.groups[group_no].add([midi_bulb])
-        except Exception as e:
-            logger.error(f"Cannot load configuration from {filename}: {str(e)}")
-            raise ValueError(f"Cannot load configuration from {filename}: {str(e)}")
 
 
 

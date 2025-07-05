@@ -5,7 +5,7 @@ import threading
 import logging
 
 from thread_prototype import ThreadInterface, group_thread
-from midi_bulb import MidiBulb
+import midi_bulb as MB
 import proto as P
 import consts as C
 
@@ -20,17 +20,20 @@ TI = [ThreadInterface(
     white_temp=2700,
     brightness=0,
     pwr=False,
-    time=30
-) for _ in range(C.GROUP_COUNT)]
+    to_off=False,
+    time=30,
+    chase_number=0
+) for _ in range(1, C.GROUP_COUNT + 1)]
 
 
 def midi_callback(msg: List[int], timestamp: float) -> None:
     type, channel = splitchannel(msg[0])
+    channel += 1  
+    logger.debug(f"Received MIDI message: {type=} on {channel=} at {timestamp}")
     if type != NOTEON:
         return
     note_num = msg[1]
     velocity = msg[2]
-    print(channel, note_num, velocity)
     if note_num == P.BLUE:
         TI[channel].set_blue(velocity)
     elif note_num == P.GREEN:
@@ -41,8 +44,14 @@ def midi_callback(msg: List[int], timestamp: float) -> None:
         TI[channel].set_white(velocity)
     elif note_num == P.BRIGHTNESS:
         TI[channel].set_brightness(velocity)
+    elif note_num == P.TO_OFF:
+        TI[channel].set_to_off(velocity)
+    elif note_num == P.TURN_OFF:
+        TI[channel].turn_off(velocity)
     elif note_num == P.GO:
         TI[channel].go(velocity) 
+    elif note_num == P.CHASE:
+        TI[channel].set_chase_number(velocity)
 
 
 def main() -> None:
@@ -51,10 +60,16 @@ def main() -> None:
     midi_in = MidiIn()
     midi_in.open_virtual_port("yeemidi")
     midi_in.callback = midi_callback
-    b1 = MidiBulb("0x000000001e5486ae")
-    t1 = threading.Thread(target=group_thread, args=([b1], TI[0]))
-    b1.turn_on()
-    t1.start()
+    grouped_bulbs = MB.from_yaml()
+    group_threads_list: List[threading.Thread] = []
+    for group, bulbs_in_group in grouped_bulbs.items():
+        group_threads_list.append(
+            threading.Thread(target=group_thread, args=(bulbs_in_group, TI[group]))
+        )
+        
+    for thread in group_threads_list:
+        thread.start()
+
     while True:
         pass
 

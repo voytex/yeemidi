@@ -2,15 +2,11 @@
 
 """
 import os, time, logging, argparse
-from typing import List
+from typing import Dict, List
 import consts as C
 import console as CON
-if C.DEV:
-    from  dev.yeelight_dummy import discover_bulbs
-else:
-    from yeelight import discover_bulbs
+import midi_bulb as MB
 import colorama as CLR
-from midi_bulb import MidiBulb, MidiBulbCollection
 
 
 logger = logging.getLogger()
@@ -38,13 +34,14 @@ def main() -> None:
     #
     # Bulbs discovery
     con.print("Querying for Yeelight bulbs...")
-    available_bulbs = MidiBulb.discover()
+    available_bulbs = MB.MidiBulb.discover()
     con.reprint(f"Found {CLR.Fore.BLUE}{len(available_bulbs)}{CLR.Style.RESET_ALL} bulb(s).")
     time.sleep(3)
     if len(available_bulbs) == 0:
         con.print(f"{CLR.Fore.RED}No bulbs found. Exiting...{CLR.Style.RESET_ALL}")
         return
-    bulb_collection = MidiBulbCollection()
+    available_bulbs = MB.MidiBulb.discover()
+    grouped_bulbs: Dict[int, List[MB.MidiBulb]] = {}
     con.refresh()
     for b in available_bulbs:
         if b is None:
@@ -55,11 +52,12 @@ def main() -> None:
             b.sticker_id = con.input_str()
             con.print("This bulb shall be assigned to the following 'group':")
             b.group = int(con.input_int())
-            bulb_collection[b.group].add(b, ensure_music_mode=False)
+            if b.group not in grouped_bulbs.keys():
+                grouped_bulbs[b.group] = []
+            grouped_bulbs[b.group].append(b)
+            logger.info(f"Bulb {b.id} with sticker ID {b.sticker_id} assigned to group {b.group}.")
             con.refresh()
-    print(id(bulb_collection[0]), id(bulb_collection[1]))
-    bulb_collection.dump_to_yaml(args.file)
-    
+    MB.to_yaml(grouped_bulbs, args.file)
     con.print(C.GREEN(f"Configuration exported to {C.BLUE(args.file)}."))
     
 

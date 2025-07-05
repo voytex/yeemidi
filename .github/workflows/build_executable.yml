@@ -1,0 +1,14 @@
+name: Build macOS executable and add to release
+on:
+    push:
+        tags: 'v*.*'
+            
+jobs:
+    build:
+        runs-on: macos-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setyp-python@v5
+              with:
+                python-version: '3.10'
+            - run: pip install -r ./requirements.txt
