@@ -24,7 +24,6 @@ jobs:
                 name: executables
             - name: Create Release
               uses: softprops/action-gh-release@v2
-              if: github.ref_type == 'tag'
               with:
                 files: |
                   dist/main
