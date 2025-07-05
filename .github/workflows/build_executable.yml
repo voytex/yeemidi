@@ -31,3 +31,5 @@ jobs:
                   dist/wizard_lightcheck
                 name: Version ${{ github.ref_name }}
                 generate_release_notes: true
+
+                
