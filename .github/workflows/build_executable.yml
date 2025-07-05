@@ -1,7 +1,7 @@
 name: Build macOS executable and add to release
 on:
     push:
-        tags: 'v*.*'
+
             
 jobs:
     build:
