@@ -1,9 +1,9 @@
 import colorama as CLR
-DISTINGUISH_COLOR = (234, 43, 255) 
+DISTINGUISH_COLOR = (234, 43, 255)
 DEV = False
 GROUP_COUNT = 16
 YEEMIDI_CONFIGURATOR_TEXT = \
-"""
+    """
                            _     _ _                       
                           (_)   | (_)                      
  _   _  ___  ___ _ __ ___  _  __| |_                       
@@ -21,7 +21,7 @@ YEEMIDI_CONFIGURATOR_TEXT = \
 """
 
 YEEMIDI_LIGHTCHECK_TEXT = \
-"""
+    """
                            _     _ _          
                           (_)   | (_)         
  _   _  ___  ___ _ __ ___  _  __| |_          
@@ -39,8 +39,26 @@ YEEMIDI_LIGHTCHECK_TEXT = \
       __/ |                                   
      |___/                                    
 """
+
+YEEMIDI_MAIN_TEXT = \
+    """
+
+                               _      _  _ 
+                              (_)    | |(_)
+ _   _   ___   ___  _ __ ___   _   __| | _ 
+| | | | / _ \ / _ \| '_ ` _ \ | | / _` || |
+| |_| ||  __/|  __/| | | | | || || (_| || |
+ \__, | \___| \___||_| |_| |_||_| \__,_||_|
+  __/ |                                    
+ |___/                                     
+
+"""
 LINE_UP = '\033[1A'
 LINE_CLEAR = '\x1b[2K'
 
-BLUE = lambda i: f"{CLR.Fore.BLUE}{i}{CLR.Style.RESET_ALL}"
-GREEN = lambda i: f"{CLR.Fore.GREEN}{i}{CLR.Style.RESET_ALL}" 
+
+def BLUE(i): return f"{CLR.Fore.BLUE}{i}{CLR.Style.RESET_ALL}"
+
+
+def GREEN(i): return f"{CLR.Fore.GREEN}{i}{CLR.Style.RESET_ALL}"
+def RED(i): return f"{CLR.Fore.RED}{i}{CLR.Style.RESET_ALL}"

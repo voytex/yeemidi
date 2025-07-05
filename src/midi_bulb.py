@@ -32,7 +32,8 @@ def get_discovered() -> List[Dict]:
             if len(__discovered) < 1:
                 raise ValueError("No bulbs discovered.")
             for bulb in __discovered:
-                logger.info(f"Discovered bulb: {bulb[CAPABILITIES][ID]} at {bulb[IP]}")
+                logger.info(
+                    f"Discovered bulb: {bulb[CAPABILITIES][ID]} at {bulb[IP]}")
         except Exception as e:
             logger.critical(f"Cannot discover bulbs: {str(e)}")
             raise ValueError(f"Cannot discover bulbs: {str(e)}")
@@ -46,9 +47,10 @@ class MidiBulb(Y.Bulb):
         for bulb in get_discovered():
             if bulb[CAPABILITIES][ID] == bulb_id:
                 return bulb["ip"]
-        logger.critical(f"Bulb with ID {bulb_id} not found.\nRun wizard_configuration.py again.")
-        raise ValueError(f"Bulb with ID {bulb_id} not found.\nRun wizard_configuration.py again.")
-
+        logger.critical(
+            f"Bulb with ID {bulb_id} not found.\nRun wizard_configuration.py again.")
+        raise ValueError(
+            f"Bulb with ID {bulb_id} not found.\nRun wizard_configuration.py again.")
 
     def __init__(self, bulb_id: str) -> None:
         """
@@ -61,16 +63,14 @@ class MidiBulb(Y.Bulb):
         """
         bulb_ip = MidiBulb.get_ip_from_id(bulb_id)
         super().__init__(bulb_ip, effect="sudden")
-        self._ip: str = bulb_ip # TODO might not be needed
+        self._ip: str = bulb_ip  # TODO might not be needed
         self._id: str = bulb_id
         self._sticker_id: Optional[str] = None
         self._group: Optional[int] = None
 
-
     def __repr__(self) -> str:
         s = f"MidiBulb: {self.id=}, {self._ip=}, {self.sticker_id=}, {self.group=}\n"
         return s
-
 
     @property
     def id(self) -> str:
@@ -78,7 +78,6 @@ class MidiBulb(Y.Bulb):
             logger.error(f"Cannot get ID of bulb")
             return "err"
         return self._id
-    
 
     @property
     def sticker_id(self) -> str:
@@ -86,13 +85,11 @@ class MidiBulb(Y.Bulb):
             logger.error(f"Cannot get sticker ID of bulb")
             return "err"
         return self._sticker_id
-    
 
     @sticker_id.setter
     def sticker_id(self, sticker_id: str) -> None:
         self._sticker_id = sticker_id
         return
-    
 
     @property
     def group(self) -> int:
@@ -100,17 +97,16 @@ class MidiBulb(Y.Bulb):
             logger.error(f"Cannot get group of bulb")
             return -1
         return self._group
-    
 
     @group.setter
     def group(self, group: int) -> None:
         if (group < 0) or (group > C.GROUP_COUNT - 1):
-            logger.error(f"Invalid group {group} for bulb {self.id}. Expected 0..{C.GROUP_COUNT - 1}, saturating to {C.GROUP_COUNT - 1}.")
+            logger.error(
+                f"Invalid group {group} for bulb {self.id}. Expected 0..{C.GROUP_COUNT - 1}, saturating to {C.GROUP_COUNT - 1}.")
             self._group = C.GROUP_COUNT - 1
         self._group = group
         return
-    
-    
+
     @staticmethod
     def discover() -> List["MidiBulb"]:
         """
@@ -121,7 +117,6 @@ class MidiBulb(Y.Bulb):
             midi_bulbs.append(MidiBulb(yeelight_bulb[CAPABILITIES][ID]))
         return midi_bulbs
 
-    
     @contextmanager
     def distinguish(self) -> Generator[None, Any, None]:
         """
@@ -132,28 +127,29 @@ class MidiBulb(Y.Bulb):
         if self is None:
             logger.error(f"Cannot distinguish bulb {self.id}")
             return
-        logger.info(f"Distinguishing bulb {self.id} with sticker ID {self.sticker_id} in group {self.group}.")
+        logger.info(
+            f"Distinguishing bulb {self.id} with sticker ID {self.sticker_id} in group {self.group}.")
         self.turn_on()
         self.set_rgb(*C.DISTINGUISH_COLOR)
         self.set_brightness(100)
         yield
         self.turn_off()
         return
-    
+
 
 def to_yaml(grouped_bulbs: Dict[int, List[MidiBulb]], filename: str = "config.yml") -> None:
-        yaml_formated = []
-        for bulbs in grouped_bulbs.values():
-            for bulb in bulbs:
-                yaml_formated.append(
-                    {
-                        "bulb_id": bulb.id,
-                        "sticker": bulb.sticker_id,
-                        "group": bulb.group
-                    }
-                )
-        with open(filename, "w+") as f:
-            yaml.dump(yaml_formated, f)
+    yaml_formated = []
+    for bulbs in grouped_bulbs.values():
+        for bulb in bulbs:
+            yaml_formated.append(
+                {
+                    "bulb_id": bulb.id,
+                    "sticker": bulb.sticker_id,
+                    "group": bulb.group
+                }
+            )
+    with open(filename, "w+") as f:
+        yaml.dump(yaml_formated, f)
 
 
 def from_yaml(filename: str = "config.yml") -> Dict[int, List[MidiBulb]]:
@@ -182,16 +178,3 @@ def distinguish_group(bulbs: List[MidiBulb]) -> Generator[None, Any, None]:
     yield
     for bulb in bulbs:
         bulb.turn_off()
-
-
-
-
-
-
-    
-
-
-
-        
-
-    

@@ -1,5 +1,5 @@
 BLACKOUT = 0
-TURN_OFF = 11 
+TURN_OFF = 11
 GO = 12
 TO_OFF = 13
 BRIGHTNESS = 14
@@ -8,6 +8,3 @@ RED = 16
 GREEN = 17
 BLUE = 18
 CHASE = 24
-
-
-    

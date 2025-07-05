@@ -1,11 +1,12 @@
 import colorama as CLR
 import consts as C
 
+
 class Console:
     def __init__(self) -> None:
         self.counter: int = 0
-        return 
-    
+        return
+
     def print(self, *args, **kwargs) -> None:
         self.counter += 1
         print(*args, **kwargs)
@@ -20,11 +21,11 @@ class Console:
         self.refresh()
         self.print(*args, **kwargs)
         return
-    
+
     def input_str(self, *args, **kwargs) -> str:
         self.counter += 1
         return input(*args, **kwargs)
-    
+
     def input_int(self, *args, **kwargs) -> int:
         while True:
             try:
@@ -35,5 +36,6 @@ class Console:
                     raise ValueError("Value too large")
                 return ret
             except ValueError as e:
-                self.print(f"{CLR.Fore.RED}Invalid input. Please enter an number (1..16).{CLR.Style.RESET_ALL}")
+                self.print(
+                    f"{CLR.Fore.RED}Invalid input. Please enter an number (1..16).{CLR.Style.RESET_ALL}")
                 continue

@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 DEFAULT_FLOW: Flow = Flow(1, Action.off, [SleepTransition(50)])
-FLOW_TABLE: List[Optional[Flow]] = [None for _ in range(1,128)]
+FLOW_TABLE: List[Optional[Flow]] = [None for _ in range(1, 128)]
 FLOW_TABLE[1] = Flow(
     # Strobo
     0, Action.off, [
@@ -23,6 +23,7 @@ FLOW_TABLE[2] = Flow(
         RGBTransition(128, 72, 2, 1000, 1),
     ]
 )
+
 
 def get_flow(num: int) -> Flow:
     try:
