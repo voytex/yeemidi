@@ -1,11 +1,16 @@
 name: Build macOS executable and add to release
 on:
     push:
+        tags:
+            - 'v*.*'
 
             
 jobs:
     build:
         runs-on: macos-latest
+        permissions:
+            contents:
+                write
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-python@v5
@@ -32,4 +37,3 @@ jobs:
                 name: Version ${{ github.ref_name }}
                 generate_release_notes: true
 
-                
