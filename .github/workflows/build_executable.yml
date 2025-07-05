@@ -12,8 +12,13 @@ jobs:
               with:
                 python-version: '3.10'
             - run: pip install -r ./requirements.txt
-            - run: pyinstaller --onefile src/wizard_configuration.py
+            - name: Build Configuration Wizard
+              run: pyinstaller --onefile src/wizard_configuration.py
+            - name: Build Lightcheck Wizard
+              run: pyinstaller --onefile src/wizard_lightcheck.py
+            - name: Build Main Executable
+              run: pyinstaller --onefile src/main.py
             - uses: actions/upload-artifact@v4
               with:
-                path: dist/wizard_configuration
-                name: wizard_configuration
+                path: dist/*
+                name: executables
