@@ -39,7 +39,7 @@ Control your Yeelight bulbs using MIDI!
 - D#-1: __WHITE TEMP__
    - Sets bulbs to white mode
    - Velocity 0 = warmest, velocity 127 = coolest
-> ![NOTE]
+> [!NOTE]
 > The most intense light output is achieved when this parameter is set in the middle (64-ish). Author assumes, that in this case, both warm and cool LEDs within the bulb are lit 100 %.
 - E-1: __RED__
    - Sets bulbs to RGB mode
