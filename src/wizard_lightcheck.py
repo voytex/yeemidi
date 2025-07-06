@@ -18,7 +18,7 @@ def main() -> None:
     #
     # Logging initiation
     logging.basicConfig(
-        level=logging.DEBUG, format="%(name)s - %(levelname)s - %(message)s", filename="ye_conf.log")
+        level=logging.DEBUG, format="%(name)s - %(levelname)s - %(message)s", filename="lightcheck.log")
     logger.info("Yeelight lightcheck started.")
     #
     # Console initiation
