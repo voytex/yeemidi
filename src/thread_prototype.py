@@ -130,18 +130,24 @@ def channel_thread(bc: List[MB.MidiBulb], ti: ThreadInterface):
         ti.lock = True
         action = YF.Action.off if ti.to_off else YF.Action.stay
         for bulb in bc:
-            if ti.cmd == "rgb":
-                flow = Y.Flow(1, action, [Y.RGBTransition(
-                    *ti.rgb, brightness=ti.brightness, duration=ti.time)])
-                bulb.set_scene(Y.SceneClass.CF, flow)
-            elif ti.cmd == "white":
-                flow = Y.Flow(1, action, [Y.TemperatureTransition(
-                    ti.white_temp, duration=ti.time, brightness=ti.brightness)])
-                bulb.set_scene(Y.SceneClass.CF, flow)
-            elif ti.cmd == "chase":
-                bulb.set_scene(Y.SceneClass.CF, get_flow(ti.chase_number))
-            elif ti.cmd == "off":
-                bulb.turn_off(duration=ti.time)
+            try:
+                if ti.cmd == "rgb":
+                    flow = Y.Flow(1, action, [Y.RGBTransition(
+                        *ti.rgb, brightness=ti.brightness, duration=ti.time)])
+                    bulb.set_scene(Y.SceneClass.CF, flow)
+                elif ti.cmd == "white":
+                    flow = Y.Flow(1, action, [Y.TemperatureTransition(
+                        ti.white_temp, duration=ti.time, brightness=ti.brightness)])
+                    bulb.set_scene(Y.SceneClass.CF, flow)
+                elif ti.cmd == "chase":
+                    bulb.set_scene(Y.SceneClass.CF, get_flow(ti.chase_number))
+                elif ti.cmd == "off":
+                    bulb.turn_off(duration=ti.time)
+            except Exception as e:
+                logger.error(f"Failed to send command to bulb {bulb.id}:\n{str(e)}\nTrying to reconnect...")
+                #
+                # This will try to establish new connection using new sockets.
+                bulb.start_music()
         ti.lock = False
         ti.new_data = False
     for bulb in bc:
