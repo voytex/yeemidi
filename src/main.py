@@ -7,6 +7,7 @@ import os
 import sys
 
 from thread_prototype import ThreadInterface, channel_thread
+import flows_table as FT
 import midi_bulb as MB
 import proto as P
 import consts as C
@@ -69,6 +70,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Yeelight Main")
     parser.add_argument(
         "-f", "--file", help="Configuration file, exported by 'wizard_configuration.py'", default="config.yml")
+    parser.add_argument(
+        "-w", "--flows", help="Flows configuration file", default="flows.yaml")
     args = parser.parse_args()
     #
     # UI setup
@@ -83,26 +86,29 @@ def main() -> None:
     #
     # Initiation
     con.print(f"Starting using {C.BLUE(args.file)} configuration file")
+    if not os.path.isfile(args.flows):
+        FT.dump_default(args.flows)
+    FT.initialize_flows(args.flows, con)
     midi_in = MidiIn()
     midi_in.open_virtual_port("yeemidi")
     midi_in.callback = midi_callback
     try:
-        grouped_bulbs = MB.from_yaml(args.file)
+        channel_bulbs = MB.from_yaml(args.file)
     except ValueError as e:
         con.print(C.RED(
             f"Not all bulbs from config file {args.file} are available on the network"))
         logger.error(
             f"Bulbs from config file {args.file} are not available on the network: {e}")
         sys.exit(1)
-    group_threads_list: List[threading.Thread] = []
+    channel_threads_list: List[threading.Thread] = []
     #
     # Launching threads
-    for group, bulbs_in_group in grouped_bulbs.items():
-        group_threads_list.append(
+    for channel, bulbs_in_channel in channel_bulbs.items():
+        channel_threads_list.append(
             threading.Thread(target=channel_thread,
-                             args=(bulbs_in_group, TI[group]))
+                             args=(bulbs_in_channel, TI[channel]))
         )
-    for thread in group_threads_list:
+    for thread in channel_threads_list:
         thread.start()
     con.reprint(f"{C.GREEN('Running!')} Type 'x' and 'Enter' to terminate.")
     #
@@ -119,7 +125,7 @@ def main() -> None:
         con.reprint(C.RED("Terminating."))
         for ti in TI:
             ti.terminate = True
-    for thread in group_threads_list:
+    for thread in channel_threads_list:
         thread.join()
     midi_in.close_port()
 
