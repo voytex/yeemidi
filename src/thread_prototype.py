@@ -113,11 +113,11 @@ class ThreadInterface:
         self.terminate = True
 
 
-def group_thread(bc: List[MB.MidiBulb], ti: ThreadInterface):
+def channel_thread(bc: List[MB.MidiBulb], ti: ThreadInterface):
     """
     TODO: 
     """
-    logger.info("Starting group thread with following bulbs: " +
+    logger.info("Starting channel thread with following bulbs: " +
                 ", ".join([bulb.id for bulb in bc]))
     for bulb in bc:
         bulb.start_music()

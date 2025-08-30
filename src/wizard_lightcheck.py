@@ -26,11 +26,11 @@ def main() -> None:
     print(C.GREEN(C.YEEMIDI_LIGHTCHECK_TEXT))
     con = CON.Console()
     greouped_bulbs = MB.from_yaml(args.file)
-    for group, bulbs_in_group in greouped_bulbs.items():
-        con.print(f"Checking group {C.BLUE(group)}:")
+    for channel, bulbs_in_channel in greouped_bulbs.items():
+        con.print(f"Checking channel {C.BLUE(channel)}:")
         con.print(
-            f"Found {C.BLUE(len(bulbs_in_group))} bulb(s) in this group.")
-        with MB.distinguish_group(bulbs_in_group):
+            f"Found {C.BLUE(len(bulbs_in_channel))} bulb(s) in this channel.")
+        with MB.distinguish_channel(bulbs_in_channel):
             con.input_str("Press Enter to continue...")
         con.refresh()
 

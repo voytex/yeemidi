@@ -6,7 +6,7 @@ import logging
 import os
 import sys
 
-from thread_prototype import ThreadInterface, group_thread
+from thread_prototype import ThreadInterface, channel_thread
 import midi_bulb as MB
 import proto as P
 import consts as C
@@ -27,7 +27,7 @@ TI = [ThreadInterface(
     time=30,
     chase_number=0,
     terminate=False
-) for _ in range(1, C.GROUP_COUNT + 1)]
+) for _ in range(1, C.CHANNEL_COUNT + 1)]
 
 
 def midi_callback(msg: List[int], timestamp: float) -> None:
@@ -99,7 +99,7 @@ def main() -> None:
     # Launching threads
     for group, bulbs_in_group in grouped_bulbs.items():
         group_threads_list.append(
-            threading.Thread(target=group_thread,
+            threading.Thread(target=channel_thread,
                              args=(bulbs_in_group, TI[group]))
         )
     for thread in group_threads_list:

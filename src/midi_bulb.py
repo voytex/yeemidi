@@ -66,10 +66,10 @@ class MidiBulb(Y.Bulb):
         self._ip: str = bulb_ip  # TODO might not be needed
         self._id: str = bulb_id
         self._sticker_id: Optional[str] = None
-        self._group: Optional[int] = None
+        self._channel: Optional[int] = None
 
     def __repr__(self) -> str:
-        s = f"MidiBulb: {self.id=}, {self._ip=}, {self.sticker_id=}, {self.group=}\n"
+        s = f"MidiBulb: {self.id=}, {self._ip=}, {self.sticker_id=}, {self.channel=}\n"
         return s
 
     @property
@@ -92,19 +92,19 @@ class MidiBulb(Y.Bulb):
         return
 
     @property
-    def group(self) -> int:
-        if self._group is None:
-            logger.error(f"Cannot get group of bulb")
+    def channel(self) -> int:
+        if self._channel is None:
+            logger.error(f"Cannot get channel of bulb")
             return -1
-        return self._group
+        return self._channel
 
-    @group.setter
-    def group(self, group: int) -> None:
-        if (group < 0) or (group > C.GROUP_COUNT - 1):
+    @channel.setter
+    def channel(self, ch: int) -> None:
+        if (ch < 0) or (ch > C.CHANNEL_COUNT - 1):
             logger.error(
-                f"Invalid group {group} for bulb {self.id}. Expected 0..{C.GROUP_COUNT - 1}, saturating to {C.GROUP_COUNT - 1}.")
-            self._group = C.GROUP_COUNT - 1
-        self._group = group
+                f"Invalid channel {ch} for bulb {self.id}. Expected 0..{C.CHANNEL_COUNT - 1}, saturating to {C.CHANNEL_COUNT - 1}.")
+            self._channel = C.CHANNEL_COUNT - 1
+        self._channel = ch
         return
 
     @staticmethod
@@ -128,7 +128,7 @@ class MidiBulb(Y.Bulb):
             logger.error(f"Cannot distinguish bulb {self.id}")
             return
         logger.info(
-            f"Distinguishing bulb {self.id} with sticker ID {self.sticker_id} in group {self.group}.")
+            f"Distinguishing bulb {self.id} with sticker ID {self.sticker_id} in channel {self.channel}.")
         self.turn_on()
         self.set_rgb(*C.DISTINGUISH_COLOR)
         self.set_brightness(100)
@@ -137,15 +137,15 @@ class MidiBulb(Y.Bulb):
         return
 
 
-def to_yaml(grouped_bulbs: Dict[int, List[MidiBulb]], filename: str = "config.yml") -> None:
+def to_yaml(bulb_in_channel: Dict[int, List[MidiBulb]], filename: str = "config.yml") -> None:
     yaml_formated = []
-    for bulbs in grouped_bulbs.values():
+    for bulbs in bulb_in_channel.values():
         for bulb in bulbs:
             yaml_formated.append(
                 {
                     "bulb_id": bulb.id,
                     "sticker": bulb.sticker_id,
-                    "group": bulb.group
+                    "channel": bulb.channel
                 }
             )
     with open(filename, "w+") as f:
@@ -159,18 +159,18 @@ def from_yaml(filename: str = "config.yml") -> Dict[int, List[MidiBulb]]:
     for yaml_bulb in yaml_formated:
         bulb_id = yaml_bulb["bulb_id"]
         sticker_id = yaml_bulb["sticker"]
-        group = int(yaml_bulb["group"])
-        if group not in ret.keys():
-            ret[group] = []
+        channel = int(yaml_bulb["channel"])
+        if channel not in ret.keys():
+            ret[channel] = []
         midibulb = MidiBulb(bulb_id)
         midibulb.sticker_id = sticker_id
-        midibulb.group = group
-        ret[group].append(midibulb)
+        midibulb.channel = channel
+        ret[channel].append(midibulb)
     return ret
 
 
 @contextmanager
-def distinguish_group(bulbs: List[MidiBulb]) -> Generator[None, Any, None]:
+def distinguish_channel(bulbs: List[MidiBulb]) -> Generator[None, Any, None]:
     for bulb in bulbs:
         bulb.turn_on()
         bulb.set_rgb(*C.DISTINGUISH_COLOR)

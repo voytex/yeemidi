@@ -41,7 +41,7 @@ def main() -> None:
         con.print(C.RED("No bulbs found. Exiting..."))
         return
     available_bulbs = MB.MidiBulb.discover()
-    grouped_bulbs: Dict[int, List[MB.MidiBulb]] = {}
+    bulbs_in_channel: Dict[int, List[MB.MidiBulb]] = {}
     con.refresh()
     for b in available_bulbs:
         if b is None:
@@ -50,15 +50,15 @@ def main() -> None:
             con.print(f"Setting bulb {C.BLUE(b.id)}:")
             con.print(f"This bulb shall have following 'sticker_id':")
             b.sticker_id = con.input_str()
-            con.print("This bulb shall be assigned to the following 'group':")
-            b.group = int(con.input_int())
-            if b.group not in grouped_bulbs.keys():
-                grouped_bulbs[b.group] = []
-            grouped_bulbs[b.group].append(b)
+            con.print("This bulb shall be assigned to the following 'channel':")
+            b.channel = int(con.input_int())
+            if b.channel not in bulbs_in_channel.keys():
+                bulbs_in_channel[b.channel] = []
+            bulbs_in_channel[b.channel].append(b)
             logger.info(
-                f"Bulb {b.id} with sticker ID {b.sticker_id} assigned to group {b.group}.")
+                f"Bulb {b.id} with sticker ID {b.sticker_id} assigned to channel {b.channel}.")
             con.refresh()
-    MB.to_yaml(grouped_bulbs, args.file)
+    MB.to_yaml(bulbs_in_channel, args.file)
     con.print(C.GREEN(f"Configuration exported to {C.BLUE(args.file)}."))
 
 
