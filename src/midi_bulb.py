@@ -2,7 +2,7 @@
 
 """
 from contextlib import contextmanager, suppress
-from typing import Any, Dict, Generator, List, Optional, Sequence
+from typing import Any, Dict, Generator, List, Optional, Sequence, Tuple
 import consts as C
 import yeelight as Y
 # import dev.yeelight_dummy as Y  # For development purposes, replace with actual yeelight import in production
@@ -43,10 +43,13 @@ def get_discovered() -> List[Dict]:
 class MidiBulb(Y.Bulb):
 
     @staticmethod
-    def get_ip_from_id(bulb_id: str) -> str:
+    def get_info_from_id(bulb_id: str) -> Tuple[str, str]:
+        """
+        Returns IP and Firmware version of the bulb with given ID.
+        """
         for bulb in get_discovered():
             if bulb[CAPABILITIES][ID] == bulb_id:
-                return bulb["ip"]
+                return bulb["ip"], bulb[CAPABILITIES]["fw_ver"]
         logger.critical(
             f"Bulb with ID {bulb_id} not found.\nRun wizard_configuration.py again.")
         raise ValueError(
@@ -61,12 +64,13 @@ class MidiBulb(Y.Bulb):
 
         :param bulb_id: ID of the bulb to connect to.
         """
-        bulb_ip = MidiBulb.get_ip_from_id(bulb_id)
+        bulb_ip, fw_ver = MidiBulb.get_info_from_id(bulb_id)
         super().__init__(bulb_ip, effect="sudden")
         self._ip: str = bulb_ip  # TODO might not be needed
         self._id: str = bulb_id
         self._sticker_id: Optional[str] = None
         self._channel: Optional[int] = None
+        self._fw_ver: Optional[str] = fw_ver
 
     def __repr__(self) -> str:
         s = f"MidiBulb: {self.id=}, {self._ip=}, {self.sticker_id=}, {self.channel=}\n"
@@ -145,7 +149,8 @@ def to_yaml(bulb_in_channel: Dict[int, List[MidiBulb]], filename: str = "config.
                 {
                     "bulb_id": bulb.id,
                     "sticker": bulb.sticker_id,
-                    "channel": bulb.channel
+                    "channel": bulb.channel,
+                    "firmware": bulb._fw_ver
                 }
             )
     with open(filename, "w+") as f:
