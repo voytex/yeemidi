@@ -1,0 +1,1707 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+  <meta charset="UTF-8"/>
+  <meta name="keywords" content="strictdoc, documentation, documentation-tool, requirements-management, requirements, documentation-generator, requirement-specifications, requirements-engineering, technical-documentation, requirements-specification"/>
+  <meta name="description" content="strictdoc. Software for technical documentation and requirements management."/>
+  <meta name="strictdoc-export-type" content="static">
+  <meta name="strictdoc-document-level" content="1">
+
+  <link rel="shortcut icon" href="../../_static/favicon.ico" type="image/x-icon"/>
+
+  
+  
+  <link rel="stylesheet" href="../../_static/base.css"/>
+  <link rel="stylesheet" href="../../_static/layout.css"/>
+  <link rel="stylesheet" href="../../_static/content.css"/>
+  <link rel="stylesheet" href="../../_static/node.css"/>
+  <link rel="stylesheet" href="../../_static/node_content.css"/>
+  <link rel="stylesheet" href="../../_static/element.css"/>
+  <link rel="stylesheet" href="../../_static/form.css"/>
+  <link rel="stylesheet" href="../../_static/requirement__temporary.css"/>
+  <link rel="stylesheet" href="../../_static/autogen.css"/>
+  
+  <link rel="stylesheet" href="../../_static/source_file_screen.css" />
+  <link rel="stylesheet" href="../../_static/requirement-tree.css"/>
+
+
+  
+  <script src="../../_static/source_file_screen.js"></script>
+  
+  
+  
+
+
+  <title>
+  src/midi_bulb.py - Source file coverage
+</title>
+
+  
+
+  <style>
+    /* Lexer: Python */
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f8f8f8; }
+.highlight .c { color: #3D7B7B; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #F00 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666 } /* Operator */
+.highlight .ch { color: #3D7B7B; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #3D7B7B; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #9C6500 } /* Comment.Preproc */
+.highlight .cpf { color: #3D7B7B; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #3D7B7B; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.highlight .gr { color: #E40000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #008400 } /* Generic.Inserted */
+.highlight .go { color: #717171 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #04D } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #687822 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #00F; font-weight: bold } /* Name.Class */
+.highlight .no { color: #800 } /* Name.Constant */
+.highlight .nd { color: #A2F } /* Name.Decorator */
+.highlight .ni { color: #717171; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #CB3F38; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #00F } /* Name.Function */
+.highlight .nl { color: #767600 } /* Name.Label */
+.highlight .nn { color: #00F; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #A2F; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #BBB } /* Text.Whitespace */
+.highlight .mb { color: #666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666 } /* Literal.Number.Float */
+.highlight .mh { color: #666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #AA5D1F; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #A45A77; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #A45A77 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #00F } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666 } /* Literal.Number.Integer.Long */
+  </style>
+
+</head>
+
+<body data-viewtype="source-file" data-turbo="false">
+
+<div class="mars">
+  
+</div>
+
+  <div class="layout" id="layout">
+
+    <nav class="layout_nav">
+      
+  <div class="nav">
+
+
+
+  <a
+    data-link="index"
+    class="nav_button"
+    href="../../index.html"
+    title="Project index">
+    <svg class="svg_icon" width="16" height="16" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <line x1="9" y1="4" x2="7" y2="4"></line>
+  <line x1="12" y1="9" x2="12" y2="7"></line>
+  <line x1="6" y1="10" x2="10" y2="6"></line>
+  <circle cx="4" cy="12" r="2.25"></circle>
+  <circle cx="12" cy="4" r="2.25"></circle>
+  <circle cx="4" cy="4" r="2.25"></circle>
+  <circle cx="12" cy="12" r="2.25"></circle>
+</svg>
+  </a><a
+    data-link="source_coverage"
+    class="nav_button"
+    href="../../source_coverage.html"
+    title="Source coverage"
+    data-testid="project-tree-link-source-coverage"
+  >
+    
+<svg class="svg_icon" width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path d="M6,2 C5.5,2 5,2 5,2 C4.5,2 4,2.5 4,3 C4,5 4,6 4,6 C4,6.5 3.5,7.5 2,8 C3.5,8.5 4,9.5 4,10 C4,10 4,11 4,13 C4,13.5 4.5,14 5,14 C5,14 5.5,14 6,14"></path>
+    <line x1="8" y1="8" x2="14" y2="8"></line>
+    <line x1="10" y1="4" x2="14" y2="4"></line>
+    <line x1="10" y1="12" x2="14" y2="12"></line>
+</svg>
+  </a></div>
+
+    </nav><aside class="layout_tree">
+      
+  <div class="source-file__aside">
+  <sdoc-tabs class="in_aside_panel">
+    <sdoc-tab data-testid="source-file-tab-Nodes" active="" style="order: 0;">Nodes</sdoc-tab>
+    <sdoc-tab data-testid="source-file-tab-Ranges" style="order: 1;">Ranges</sdoc-tab>
+  </sdoc-tabs>
+
+  <div class="source-file__refer" id="referContainer">
+  <sdoc-tab-content id="Nodes" active>
+    <div class="source-file__toc"><div class="source-file__toc-node">
+            
+
+
+<div
+  id="requirement:YMD-SYS-3"
+  class="source-file__requirement"
+  data-reqid="YMD-SYS-3"
+  
+>
+  
+  <div class="source-file__requirement-header">
+    <a
+      class="action_icon secondary"
+      href="../../yeemidi/requirements/sys-reqs.html#YMD-SYS-3"
+      title="Go to requirement in document"
+    ><svg class="svg_icon" width="16" height="16" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M13,8 C13,7.5 12.5,7 12,7 L9,7 C8.5,7 8,6.5 8,6 L8,3 C8,2.5 7.5,2 7,2 L4,2 C3.5,2 3,2.5 3,3 L3,13 C3,13.5 3.5,14 4,14 L6,14" />
+  <line x1="8" y1="12" x2="14" y2="12" stroke-linecap="round"></line>
+  <polyline stroke-linecap="round" points="10 9.5 7.5 12 10 14.5"></polyline>
+  <path d="M13,9 C13,7 13,7 12.5,6.5 C11.5,5.5 10.8,4.8 10.3,4.3 C9.9,3.9 9.3,3.3 8.5,2.5 C8,2 7.5,2 7,2 L6,2" />
+</svg></a>
+    <div class="source-file__requirement-info">
+      <div class="source-file__requirement-uid">YMD-SYS-3</div>
+    </div>
+  </div>
+  
+
+ <div class="source-file__requirement-links">
+
+          <a
+            class="source__range-pointer"
+            data-begin="20"
+            data-end="42"
+            data-traceability-file-type="this_file"
+            href="../../_source_files/src/midi_bulb.py.html#YMD-SYS-3#20#42"
+            title="lines 20-42 in file src/midi_bulb.py"
+          >
+            
+            <b>[ 20-42 ]</b>
+            <span class="source__range-pointer_description">src/midi_bulb.py, function get_discovered()</span>
+            
+          </a></div>
+
+  
+</div>
+          </div></div>
+  </sdoc-tab-content>
+  <sdoc-tab-content id="Ranges">
+    <div class="source-file__toc"><div class="source-file__toc-range">
+            <div class="source-file__toc-range-header">
+
+<a
+  class="source__range-pointer action_button"
+  data-begin="20"
+  data-end="42"
+  href="../../_source_files/src/midi_bulb.py.html##20#42"
+  title="Click to toggle range (Ctrl/Cmd + Click with focus)"
+><span class="source__range-definition">20 - 42 | function get_discovered()</span></a></div>
+            
+              
+                <div class="source-file__toc-range-node">
+                
+
+  
+
+
+<div
+  id="requirement:YMD-SYS-3"
+  class="source-file__requirement"
+  data-reqid="YMD-SYS-3"
+  
+    data-begin="20"
+    data-end="42"
+  
+>
+  
+  <details>
+    <summary>
+  
+  <div class="source-file__requirement-header">
+    <a
+      class="action_icon secondary"
+      href="../../yeemidi/requirements/sys-reqs.html#YMD-SYS-3"
+      title="Go to requirement in document"
+    ><svg class="svg_icon" width="16" height="16" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M13,8 C13,7.5 12.5,7 12,7 L9,7 C8.5,7 8,6.5 8,6 L8,3 C8,2.5 7.5,2 7,2 L4,2 C3.5,2 3,2.5 3,3 L3,13 C3,13.5 3.5,14 4,14 L6,14" />
+  <line x1="8" y1="12" x2="14" y2="12" stroke-linecap="round"></line>
+  <polyline stroke-linecap="round" points="10 9.5 7.5 12 10 14.5"></polyline>
+  <path d="M13,9 C13,7 13,7 12.5,6.5 C11.5,5.5 10.8,4.8 10.3,4.3 C9.9,3.9 9.3,3.3 8.5,2.5 C8,2 7.5,2 7,2 L6,2" />
+</svg></a>
+    <div class="source-file__requirement-info">
+      <div class="source-file__requirement-uid">YMD-SYS-3</div>
+    </div>
+  </div>
+  
+    </summary>
+  
+
+ <div class="source-file__requirement-links">
+
+          <a
+            class="source__range-pointer"
+            data-begin="20"
+            data-end="42"
+            data-traceability-file-type="this_file"
+            href="../../_source_files/src/midi_bulb.py.html#YMD-SYS-3#20#42"
+            title="lines 20-42 in file src/midi_bulb.py"
+          >
+            
+            <b>[ 20-42 ]</b>
+            <span class="source__range-pointer_description">src/midi_bulb.py, function get_discovered()</span>
+            
+          </a></div>
+
+  
+  </details>
+  
+</div>
+                </div>
+              
+            
+          </div></div>
+  </sdoc-tab-content>
+  </div>
+
+</div>
+
+    </aside><aside
+        data-position="right"
+        class="layout_toc"
+      >
+        
+      </aside><header class="layout_header">
+      <div class="header">
+
+  
+  <svg class="svg_icon" width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <polyline points="14 5 14 10.5 8 15 2 10.5 2 5 8 1 14 5 8 9.5"></polyline>
+  <polyline points="2.5 5.5 8 9.5 8 15"></polyline>
+</svg>
+  <div
+    class="header__project_name"
+    title="yeemidi test project"
+  >yeemidi test project
+  </div>
+
+  
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" class="sc-gLvsXj bpkaBy"><path stroke="currentColor" d="M12.5 4.5l-5 11" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      <svg class="svg_icon" width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <line x1="10" y1="3" x2="6" y2="13"></line>
+    <path d="M3.5,5 C2.5,6 1.5,7 1.5,7 C0.5,8 0.5,8 1.5,9 C1.5,9 2.5,10 3.5,11"/>
+    <path d="M12.5,5 C14,6.5 14.5,7 14.5,7 C15.5,8 15.5,8 14.5,9 C14.5,9 14,9.5 12.5,11"/>
+</svg>
+<div class="header__document_title"
+  title="src/midi_bulb.py">
+  src/midi_bulb.py
+</div>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" class="sc-gLvsXj bpkaBy"><path stroke="currentColor" d="M12.5 4.5l-5 11" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    <div class="pagetype">Source file coverage</div><div class="actions_group">
+  <div id="sourceCodeCoverageSwitch" class="source-file__toggle-switch"></div>
+</div></div>
+    </header>
+
+    <main class="layout_main">
+      
+  <div class="main">
+
+<div id="sourceContainer" class="source-file__source">
+
+  <div class="sdoc-table_key_value">
+  
+  <div class="sdoc-table_key_value-key">Path:</div>
+  <div class="sdoc-table_key_value-value">src/midi_bulb.py</div>
+  <div class="sdoc-table_key_value-key">Lines:</div>
+  <div class="sdoc-table_key_value-value">187</div>
+  <div class="sdoc-table_key_value-key">Non-empty lines:</div>
+  <div class="sdoc-table_key_value-value">160</div>
+  <div class="sdoc-table_key_value-key">Non-empty lines covered with requirements:</div>
+  <div class="sdoc-table_key_value-value">21 / 160 (13.1%)</div>
+  <div class="sdoc-table_key_value-key">Functions:</div>
+  <div class="sdoc-table_key_value-value">15</div>
+  <div class="sdoc-table_key_value-key">Functions covered by requirements:</div>
+  <div class="sdoc-table_key_value-value">1 / 15 (6.7%)</div>
+</div><div id="source" class="source">
+
+      <div data-line="1" class="source__line">
+        <div data-line="1" id="line-1" class="source__line-number"><pre>1</pre></div>
+        <div data-line="1" class="source__line-content">
+            <pre class="highlight"><span></span><span class="sd">&quot;&quot;&quot;</span></pre></div>
+      </div>
+
+      <div data-line="2" class="source__line">
+        <div data-line="2" id="line-2" class="source__line-number"><pre>2</pre></div>
+        <div data-line="2" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="3" class="source__line">
+        <div data-line="3" id="line-3" class="source__line-number"><pre>3</pre></div>
+        <div data-line="3" class="source__line-content">
+            <pre class="highlight"><span class="sd">&quot;&quot;&quot;</span></pre></div>
+      </div>
+
+      <div data-line="4" class="source__line">
+        <div data-line="4" id="line-4" class="source__line-number"><pre>4</pre></div>
+        <div data-line="4" class="source__line-content">
+            <pre class="highlight"><span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span><span class="p">,</span> <span class="n">suppress</span></pre></div>
+      </div>
+
+      <div data-line="5" class="source__line">
+        <div data-line="5" id="line-5" class="source__line-number"><pre>5</pre></div>
+        <div data-line="5" class="source__line-content">
+            <pre class="highlight"><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span></pre></div>
+      </div>
+
+      <div data-line="6" class="source__line">
+        <div data-line="6" id="line-6" class="source__line-number"><pre>6</pre></div>
+        <div data-line="6" class="source__line-content">
+            <pre class="highlight"><span class="kn">import</span><span class="w"> </span><span class="nn">consts</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">C</span></pre></div>
+      </div>
+
+      <div data-line="7" class="source__line">
+        <div data-line="7" id="line-7" class="source__line-number"><pre>7</pre></div>
+        <div data-line="7" class="source__line-content">
+            <pre class="highlight"><span class="kn">import</span><span class="w"> </span><span class="nn">yeelight</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">Y</span></pre></div>
+      </div>
+
+      <div data-line="8" class="source__line">
+        <div data-line="8" id="line-8" class="source__line-number"><pre>8</pre></div>
+        <div data-line="8" class="source__line-content">
+            <pre class="highlight"><span class="c1"># import dev.yeelight_dummy as Y  # For development purposes, replace with actual yeelight import in production</span></pre></div>
+      </div>
+
+      <div data-line="9" class="source__line">
+        <div data-line="9" id="line-9" class="source__line-number"><pre>9</pre></div>
+        <div data-line="9" class="source__line-content">
+            <pre class="highlight"><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span></pre></div>
+      </div>
+
+      <div data-line="10" class="source__line">
+        <div data-line="10" id="line-10" class="source__line-number"><pre>10</pre></div>
+        <div data-line="10" class="source__line-content">
+            <pre class="highlight"><span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span></pre></div>
+      </div>
+
+      <div data-line="11" class="source__line">
+        <div data-line="11" id="line-11" class="source__line-number"><pre>11</pre></div>
+        <div data-line="11" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="12" class="source__line">
+        <div data-line="12" id="line-12" class="source__line-number"><pre>12</pre></div>
+        <div data-line="12" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="13" class="source__line">
+        <div data-line="13" id="line-13" class="source__line-number"><pre>13</pre></div>
+        <div data-line="13" class="source__line-content">
+            <pre class="highlight"><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="14" class="source__line">
+        <div data-line="14" id="line-14" class="source__line-number"><pre>14</pre></div>
+        <div data-line="14" class="source__line-content">
+            <pre class="highlight"><span class="n">CAPABILITIES</span> <span class="o">=</span> <span class="s2">&quot;capabilities&quot;</span></pre></div>
+      </div>
+
+      <div data-line="15" class="source__line">
+        <div data-line="15" id="line-15" class="source__line-number"><pre>15</pre></div>
+        <div data-line="15" class="source__line-content">
+            <pre class="highlight"><span class="n">ID</span> <span class="o">=</span> <span class="s2">&quot;id&quot;</span></pre></div>
+      </div>
+
+      <div data-line="16" class="source__line">
+        <div data-line="16" id="line-16" class="source__line-number"><pre>16</pre></div>
+        <div data-line="16" class="source__line-content">
+            <pre class="highlight"><span class="n">IP</span> <span class="o">=</span> <span class="s2">&quot;ip&quot;</span></pre></div>
+      </div>
+
+      <div data-line="17" class="source__line">
+        <div data-line="17" id="line-17" class="source__line-number"><pre>17</pre></div>
+        <div data-line="17" class="source__line-content">
+            <pre class="highlight"><span class="n">__discovered</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></pre></div>
+      </div>
+
+      <div data-line="18" class="source__line">
+        <div data-line="18" id="line-18" class="source__line-number"><pre>18</pre></div>
+        <div data-line="18" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="19" class="source__line">
+        <div data-line="19" id="line-19" class="source__line-number"><pre>19</pre></div>
+        <div data-line="19" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div><div
+          class="source__range collapsed"
+          data-begin="20"
+          data-end="42"
+        >
+          <div class="source__range-header">
+
+<a
+  class="source__range-pointer action_button"
+  data-begin="20"
+  data-end="42"
+  href="../../_source_files/src/midi_bulb.py.html##20#42"
+  title="Click to toggle range (Ctrl/Cmd + Click with focus)"
+><span class="source__range-definition">20 - 42 | function get_discovered()</span></a></div>
+          <div class="source__range-cell">
+            <div
+              class="source__range-handler"
+              data-begin="20"
+              data-end="42"
+            ><svg class="svg_icon" width="16px" height="16px" viewBox="0 0 16 16">
+  <path d="M8.25,8 L7.75,8 M2.25,8 L1.75,8 M14.25,8 L13.75,8 M11.25,8 L10.75,8 M5.25,8 L4.75,8"></path>
+  <g class="expanded">
+    <g class="arrow_top">
+      <polyline points="10.5 13.5 8 11 5.5 13.5"></polyline>
+      <line x1="8" y1="11" x2="8" y2="15"></line>
+    </g>
+    <g class="arrow_bottom">
+      <polyline points="10.5 2.5 8 5 5.5 2.5"></polyline>
+      <line x1="8" y1="5" x2="8" y2="1"></line>
+    </g>
+  </g>
+  <g class="collapsed">
+    <g class="arrow_top_coll">
+      <polyline points="10.5 3.5 8 1 5.5 3.5"></polyline>
+      <line x1="8" y1="1" x2="8" y2="5"></line>
+    </g>
+    <g class="arrow_bottom_coll">
+      <polyline points="10.5 12.5 8 15 5.5 12.5"></polyline>
+      <line x1="8" y1="15" x2="8" y2="11"></line>
+    </g>
+  </g>
+</svg></div>
+          </div>
+          <div class="source__range-cell">
+            <ul class="source__range-titles-list"><li>
+                  
+
+
+<span class="source__range-title-icon" title="Relation from source file to document node"><svg class="svg_icon" width="16px" height="16px" viewBox="0 0 16 16">
+        <g class="svg_source_pointer_brackets">
+          <path d="M3.5,8 C2,9.5 1.5,10 1.5,10 C0.5,11 0.5,11 1.5,12 C1.5,12 2,12.5 3.5,14" id="lb"></path>
+          <path d="M12.5,8 C14,9.5 14.5,10 14.5,10 C15.5,11 15.5,11 14.5,12 C14.5,12 14,12.5 12.5,14" id="rb"></path>
+        </g>
+        <g class="svg_source_pointer_arrow">
+          <line x1="8" y1="12" x2="8" y2="4" id="arr0"></line>
+          <polyline points="10.5 6.5 8 4 5.5 6.5" id="arr"></polyline>
+        </g>
+
+</svg></span>
+  "YMD-SYS-3" (REQUIREMENT)
+
+                </li></ul>
+            <div class="source__range-banner source__range-start">
+
+
+
+
+
+
+
+
+  <sdoc-node
+    node-style="readonly"
+    node-role="requirement"
+      show-node-type-name="REQUIREMENT"
+    
+      node-view="narrative"
+    data-testid="node-requirement"
+  >
+
+    <sdoc-anchor
+  id="YMD-SYS-3"
+  data-anchor="YMD-SYS-3"
+  node-role="requirement"
+  data-uid="YMD-SYS-3"
+  
+  
+>
+  
+  <div class="anchor_block" data-testid="anchor_hover_button">
+    
+      
+<div class="anchor_button" title="Click to copy" data-testid="section-anchor-button">
+  <span class="anchor_base_icon" style="line-height: 0.1;">
+    <span class="svg_icon_not_hover_visible"><svg class="svg_icon" width="16px" height="16px" viewBox="0 0 16 16">
+  <circle cx="8" cy="3" r="1"></circle>
+  <line x1="8" y1="4" x2="8" y2="14.5"></line>
+  <path d="M5.5,6 C5.5,6 7,6 10.5,6 C10.5,6 5.5,6 5.5,6 Z"/>
+  <path d="M2,11 C3,10 3.5,9.5 3.5,9.5 C3.5,12 5,13 8,13 C11,13 12.5,12 12.5,9.5 C12.5,9.5 13,10 14,11"/>
+</svg></span>
+    <span class="svg_icon_hover_visible"><svg class="svg_icon" width="16px" height="16px" viewBox="0 0 16 16">
+  <path d="M8,2 L12,2 C13,2 14,3 14,4 L14,8 C14,9 13,10 12,10 L8,10 C7,10 6,9 6,8 L6,4 C6,3 7,2 8,2 Z"/>
+  <path d="M10,12 C10,13 9,14 8,14 L4,14 C3,14 2,13 2,12 L2,8 C2,7 3,6 4,6"/>
+</svg></span>
+  </span>
+  <span class="anchor_check_icon" style="line-height: 0.1; display: none;">
+    <svg class="svg_icon" width="16px" height="16px" viewBox="0 0 16 16">
+  <path d="M2.5,8.5 C2.5,8.5 3.5,9.5 6,12 C11,7 13.5,4.5 13.5,4.5" />
+</svg>
+  </span>
+  <span class="anchor_button_text">YMD-SYS-3</span>
+</div>
+    </div></sdoc-anchor>
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<sdoc-node-content
+  node-view="table"
+  data-level=""
+  show-node-type-name="REQUIREMENT"
+  data-testid="requirement-style-table"
+>
+  
+  
+  
+  
+  
+
+  
+    <sdoc-scope class="node_fields_group-secondary html2pdf4doc-no-hanging">
+      
+    <sdoc-node-field-label>UID:</sdoc-node-field-label>
+    <sdoc-node-field
+      data-field-type="singleline"
+      data-field-label="UID"
+    >
+
+<sdoc-autogen>YMD-SYS-3</sdoc-autogen></sdoc-node-field>
+  
+      
+      
+      <sdoc-node-field-label>RELATIONS (File):</sdoc-node-field-label>
+      <sdoc-node-field data-field-label="file relations">
+        <ul class="requirement__link">
+              <li>
+                <a data-turbo="false" class="requirement__link-file" href="../../_source_files/src/midi_bulb.py.html#YMD-SYS-3#20#42">
+                  src/midi_bulb.py, <i>lines: 20-42</i>, function get_discovered()
+                </a>
+              </li></ul>
+      </sdoc-node-field>
+    </sdoc-scope>
+    
+    <sdoc-scope class="node_fields_group-primary">
+      
+    <sdoc-node-field-label>STATEMENT:</sdoc-node-field-label>
+    <sdoc-node-field
+      data-field-label="statement"
+    >
+
+<sdoc-autogen><div class="document">
+<p>Application shall be able to distinguish bulbs based on their <strong>unique ID</strong> and shall not rely on IP addresses.</p>
+</div>
+</sdoc-autogen></sdoc-node-field>
+      
+      
+
+
+
+      
+
+
+
+  
+    </sdoc-scope>
+    
+  
+
+</sdoc-node-content>
+
+
+  </sdoc-node></div>
+          </div>
+        </div>
+      
+
+      <div data-line="20" class="source__line">
+        <div data-line="20" id="line-20" class="source__line-number"><pre>20</pre></div>
+        <div data-line="20" class="source__line-content">
+            <pre class="highlight"><span class="k">def</span><span class="w"> </span><span class="nf">get_discovered</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span></pre></div>
+      </div>
+
+      <div data-line="21" class="source__line">
+        <div data-line="21" id="line-21" class="source__line-number"><pre>21</pre></div>
+        <div data-line="21" class="source__line-content">
+            <pre class="highlight"><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span></pre></div>
+      </div>
+
+      <div data-line="22" class="source__line">
+        <div data-line="22" id="line-22" class="source__line-number"><pre>22</pre></div>
+        <div data-line="22" class="source__line-content">
+            <pre class="highlight"><span class="sd">    Returns the discovered list of dictionaries describing bulbs.</span></pre></div>
+      </div>
+
+      <div data-line="23" class="source__line">
+        <div data-line="23" id="line-23" class="source__line-number"><pre>23</pre></div>
+        <div data-line="23" class="source__line-content">
+            <pre class="highlight"><span class="sd">    Else, queries the network for available bulbs.</span></pre></div>
+      </div>
+
+      <div data-line="24" class="source__line">
+        <div data-line="24" id="line-24" class="source__line-number"><pre>24</pre></div>
+        <div data-line="24" class="source__line-content">
+            <pre class="highlight"><span class="sd">    </span></pre></div>
+      </div>
+
+      <div data-line="25" class="source__line">
+        <div data-line="25" id="line-25" class="source__line-number"><pre>25</pre></div>
+        <div data-line="25" class="source__line-content">
+            <pre class="highlight"><span class="sd">    :return: List of Dicts or None</span></pre></div>
+      </div>
+
+      <div data-line="26" class="source__line">
+        <div data-line="26" id="line-26" class="source__line-number"><pre>26</pre></div>
+        <div data-line="26" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="27" class="source__line">
+        <div data-line="27" id="line-27" class="source__line-number"><pre>27</pre></div>
+        <div data-line="27" class="source__line-content">
+            <pre class="highlight"><span class="sd">    @relation(YMD-SYS-3, scope=function)</span></pre></div>
+      </div>
+
+      <div data-line="28" class="source__line">
+        <div data-line="28" id="line-28" class="source__line-number"><pre>28</pre></div>
+        <div data-line="28" class="source__line-content">
+            <pre class="highlight"><span class="sd">    &quot;&quot;&quot;</span></pre></div>
+      </div>
+
+      <div data-line="29" class="source__line">
+        <div data-line="29" id="line-29" class="source__line-number"><pre>29</pre></div>
+        <div data-line="29" class="source__line-content">
+            <pre class="highlight">    <span class="k">global</span> <span class="n">__discovered</span></pre></div>
+      </div>
+
+      <div data-line="30" class="source__line">
+        <div data-line="30" id="line-30" class="source__line-number"><pre>30</pre></div>
+        <div data-line="30" class="source__line-content">
+            <pre class="highlight">    <span class="k">if</span> <span class="n">__discovered</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="31" class="source__line">
+        <div data-line="31" id="line-31" class="source__line-number"><pre>31</pre></div>
+        <div data-line="31" class="source__line-content">
+            <pre class="highlight">        <span class="k">try</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="32" class="source__line">
+        <div data-line="32" id="line-32" class="source__line-number"><pre>32</pre></div>
+        <div data-line="32" class="source__line-content">
+            <pre class="highlight">            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Discovering bulbs...&quot;</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="33" class="source__line">
+        <div data-line="33" id="line-33" class="source__line-number"><pre>33</pre></div>
+        <div data-line="33" class="source__line-content">
+            <pre class="highlight">            <span class="n">__discovered</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">discover_bulbs</span><span class="p">()</span></pre></div>
+      </div>
+
+      <div data-line="34" class="source__line">
+        <div data-line="34" id="line-34" class="source__line-number"><pre>34</pre></div>
+        <div data-line="34" class="source__line-content">
+            <pre class="highlight">            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">__discovered</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="35" class="source__line">
+        <div data-line="35" id="line-35" class="source__line-number"><pre>35</pre></div>
+        <div data-line="35" class="source__line-content">
+            <pre class="highlight">                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No bulbs discovered.&quot;</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="36" class="source__line">
+        <div data-line="36" id="line-36" class="source__line-number"><pre>36</pre></div>
+        <div data-line="36" class="source__line-content">
+            <pre class="highlight">            <span class="k">for</span> <span class="n">bulb</span> <span class="ow">in</span> <span class="n">__discovered</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="37" class="source__line">
+        <div data-line="37" id="line-37" class="source__line-number"><pre>37</pre></div>
+        <div data-line="37" class="source__line-content">
+            <pre class="highlight">                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span></pre></div>
+      </div>
+
+      <div data-line="38" class="source__line">
+        <div data-line="38" id="line-38" class="source__line-number"><pre>38</pre></div>
+        <div data-line="38" class="source__line-content">
+            <pre class="highlight">                    <span class="sa">f</span><span class="s2">&quot;Discovered bulb: </span><span class="si">{</span><span class="n">bulb</span><span class="p">[</span><span class="n">CAPABILITIES</span><span class="p">][</span><span class="n">ID</span><span class="p">]</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="n">bulb</span><span class="p">[</span><span class="n">IP</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="39" class="source__line">
+        <div data-line="39" id="line-39" class="source__line-number"><pre>39</pre></div>
+        <div data-line="39" class="source__line-content">
+            <pre class="highlight">        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="40" class="source__line">
+        <div data-line="40" id="line-40" class="source__line-number"><pre>40</pre></div>
+        <div data-line="40" class="source__line-content">
+            <pre class="highlight">            <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot discover bulbs: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="41" class="source__line">
+        <div data-line="41" id="line-41" class="source__line-number"><pre>41</pre></div>
+        <div data-line="41" class="source__line-content">
+            <pre class="highlight">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot discover bulbs: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="42" class="source__line">
+        <div data-line="42" id="line-42" class="source__line-number"><pre>42</pre></div>
+        <div data-line="42" class="source__line-content">
+            <pre class="highlight">    <span class="k">return</span> <span class="n">__discovered</span></pre></div>
+      </div>
+        <div
+          class="source__range-closer"
+          data-end="42"
+        >
+          <div class="source__range-closer-label">
+
+<a
+  class="source__range-pointer action_button"
+  data-begin="20"
+  data-end="42"
+  href="../../_source_files/src/midi_bulb.py.html##20#42"
+  title="Click to toggle range (Ctrl/Cmd + Click with focus)"
+><span class="source__range-definition">20 - 42 | function get_discovered()</span></a></div>
+        </div>
+      
+
+      <div data-line="43" class="source__line">
+        <div data-line="43" id="line-43" class="source__line-number"><pre>43</pre></div>
+        <div data-line="43" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="44" class="source__line">
+        <div data-line="44" id="line-44" class="source__line-number"><pre>44</pre></div>
+        <div data-line="44" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="45" class="source__line">
+        <div data-line="45" id="line-45" class="source__line-number"><pre>45</pre></div>
+        <div data-line="45" class="source__line-content">
+            <pre class="highlight"><span class="k">class</span><span class="w"> </span><span class="nc">MidiBulb</span><span class="p">(</span><span class="n">Y</span><span class="o">.</span><span class="n">Bulb</span><span class="p">):</span></pre></div>
+      </div>
+
+      <div data-line="46" class="source__line">
+        <div data-line="46" id="line-46" class="source__line-number"><pre>46</pre></div>
+        <div data-line="46" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="47" class="source__line">
+        <div data-line="47" id="line-47" class="source__line-number"><pre>47</pre></div>
+        <div data-line="47" class="source__line-content">
+            <pre class="highlight">    <span class="nd">@staticmethod</span></pre></div>
+      </div>
+
+      <div data-line="48" class="source__line">
+        <div data-line="48" id="line-48" class="source__line-number"><pre>48</pre></div>
+        <div data-line="48" class="source__line-content">
+            <pre class="highlight">    <span class="k">def</span><span class="w"> </span><span class="nf">get_info_from_id</span><span class="p">(</span><span class="n">bulb_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span></pre></div>
+      </div>
+
+      <div data-line="49" class="source__line">
+        <div data-line="49" id="line-49" class="source__line-number"><pre>49</pre></div>
+        <div data-line="49" class="source__line-content">
+            <pre class="highlight"><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span></pre></div>
+      </div>
+
+      <div data-line="50" class="source__line">
+        <div data-line="50" id="line-50" class="source__line-number"><pre>50</pre></div>
+        <div data-line="50" class="source__line-content">
+            <pre class="highlight"><span class="sd">        Returns IP and Firmware version of the bulb with given ID.</span></pre></div>
+      </div>
+
+      <div data-line="51" class="source__line">
+        <div data-line="51" id="line-51" class="source__line-number"><pre>51</pre></div>
+        <div data-line="51" class="source__line-content">
+            <pre class="highlight"><span class="sd">        &quot;&quot;&quot;</span></pre></div>
+      </div>
+
+      <div data-line="52" class="source__line">
+        <div data-line="52" id="line-52" class="source__line-number"><pre>52</pre></div>
+        <div data-line="52" class="source__line-content">
+            <pre class="highlight">        <span class="k">for</span> <span class="n">bulb</span> <span class="ow">in</span> <span class="n">get_discovered</span><span class="p">():</span></pre></div>
+      </div>
+
+      <div data-line="53" class="source__line">
+        <div data-line="53" id="line-53" class="source__line-number"><pre>53</pre></div>
+        <div data-line="53" class="source__line-content">
+            <pre class="highlight">            <span class="k">if</span> <span class="n">bulb</span><span class="p">[</span><span class="n">CAPABILITIES</span><span class="p">][</span><span class="n">ID</span><span class="p">]</span> <span class="o">==</span> <span class="n">bulb_id</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="54" class="source__line">
+        <div data-line="54" id="line-54" class="source__line-number"><pre>54</pre></div>
+        <div data-line="54" class="source__line-content">
+            <pre class="highlight">                <span class="k">return</span> <span class="n">bulb</span><span class="p">[</span><span class="s2">&quot;ip&quot;</span><span class="p">],</span> <span class="n">bulb</span><span class="p">[</span><span class="n">CAPABILITIES</span><span class="p">][</span><span class="s2">&quot;fw_ver&quot;</span><span class="p">]</span></pre></div>
+      </div>
+
+      <div data-line="55" class="source__line">
+        <div data-line="55" id="line-55" class="source__line-number"><pre>55</pre></div>
+        <div data-line="55" class="source__line-content">
+            <pre class="highlight">        <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span></pre></div>
+      </div>
+
+      <div data-line="56" class="source__line">
+        <div data-line="56" id="line-56" class="source__line-number"><pre>56</pre></div>
+        <div data-line="56" class="source__line-content">
+            <pre class="highlight">            <span class="sa">f</span><span class="s2">&quot;Bulb with ID </span><span class="si">{</span><span class="n">bulb_id</span><span class="si">}</span><span class="s2"> not found.</span><span class="se">\n</span><span class="s2">Run wizard_configuration.py again.&quot;</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="57" class="source__line">
+        <div data-line="57" id="line-57" class="source__line-number"><pre>57</pre></div>
+        <div data-line="57" class="source__line-content">
+            <pre class="highlight">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span></pre></div>
+      </div>
+
+      <div data-line="58" class="source__line">
+        <div data-line="58" id="line-58" class="source__line-number"><pre>58</pre></div>
+        <div data-line="58" class="source__line-content">
+            <pre class="highlight">            <span class="sa">f</span><span class="s2">&quot;Bulb with ID </span><span class="si">{</span><span class="n">bulb_id</span><span class="si">}</span><span class="s2"> not found.</span><span class="se">\n</span><span class="s2">Run wizard_configuration.py again.&quot;</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="59" class="source__line">
+        <div data-line="59" id="line-59" class="source__line-number"><pre>59</pre></div>
+        <div data-line="59" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="60" class="source__line">
+        <div data-line="60" id="line-60" class="source__line-number"><pre>60</pre></div>
+        <div data-line="60" class="source__line-content">
+            <pre class="highlight">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulb_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="61" class="source__line">
+        <div data-line="61" id="line-61" class="source__line-number"><pre>61</pre></div>
+        <div data-line="61" class="source__line-content">
+            <pre class="highlight"><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span></pre></div>
+      </div>
+
+      <div data-line="62" class="source__line">
+        <div data-line="62" id="line-62" class="source__line-number"><pre>62</pre></div>
+        <div data-line="62" class="source__line-content">
+            <pre class="highlight"><span class="sd">        MidiBuld class wraps around Yeelight&#39;s Bulb class, </span></pre></div>
+      </div>
+
+      <div data-line="63" class="source__line">
+        <div data-line="63" id="line-63" class="source__line-number"><pre>63</pre></div>
+        <div data-line="63" class="source__line-content">
+            <pre class="highlight"><span class="sd">        providing additional functionality.\n</span></pre></div>
+      </div>
+
+      <div data-line="64" class="source__line">
+        <div data-line="64" id="line-64" class="source__line-number"><pre>64</pre></div>
+        <div data-line="64" class="source__line-content">
+            <pre class="highlight"><span class="sd">        It hides the IP address of the bulbs and allows</span></pre></div>
+      </div>
+
+      <div data-line="65" class="source__line">
+        <div data-line="65" id="line-65" class="source__line-number"><pre>65</pre></div>
+        <div data-line="65" class="source__line-content">
+            <pre class="highlight"><span class="sd">        to reach them just by their ID.</span></pre></div>
+      </div>
+
+      <div data-line="66" class="source__line">
+        <div data-line="66" id="line-66" class="source__line-number"><pre>66</pre></div>
+        <div data-line="66" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="67" class="source__line">
+        <div data-line="67" id="line-67" class="source__line-number"><pre>67</pre></div>
+        <div data-line="67" class="source__line-content">
+            <pre class="highlight"><span class="sd">        :param bulb_id: ID of the bulb to connect to.</span></pre></div>
+      </div>
+
+      <div data-line="68" class="source__line">
+        <div data-line="68" id="line-68" class="source__line-number"><pre>68</pre></div>
+        <div data-line="68" class="source__line-content">
+            <pre class="highlight"><span class="sd">        &quot;&quot;&quot;</span></pre></div>
+      </div>
+
+      <div data-line="69" class="source__line">
+        <div data-line="69" id="line-69" class="source__line-number"><pre>69</pre></div>
+        <div data-line="69" class="source__line-content">
+            <pre class="highlight">        <span class="n">bulb_ip</span><span class="p">,</span> <span class="n">fw_ver</span> <span class="o">=</span> <span class="n">MidiBulb</span><span class="o">.</span><span class="n">get_info_from_id</span><span class="p">(</span><span class="n">bulb_id</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="70" class="source__line">
+        <div data-line="70" id="line-70" class="source__line-number"><pre>70</pre></div>
+        <div data-line="70" class="source__line-content">
+            <pre class="highlight">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">bulb_ip</span><span class="p">,</span> <span class="n">effect</span><span class="o">=</span><span class="s2">&quot;sudden&quot;</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="71" class="source__line">
+        <div data-line="71" id="line-71" class="source__line-number"><pre>71</pre></div>
+        <div data-line="71" class="source__line-content">
+            <pre class="highlight">        <span class="bp">self</span><span class="o">.</span><span class="n">_ip</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">bulb_ip</span>  <span class="c1"># TODO might not be needed</span></pre></div>
+      </div>
+
+      <div data-line="72" class="source__line">
+        <div data-line="72" id="line-72" class="source__line-number"><pre>72</pre></div>
+        <div data-line="72" class="source__line-content">
+            <pre class="highlight">        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">bulb_id</span></pre></div>
+      </div>
+
+      <div data-line="73" class="source__line">
+        <div data-line="73" id="line-73" class="source__line-number"><pre>73</pre></div>
+        <div data-line="73" class="source__line-content">
+            <pre class="highlight">        <span class="bp">self</span><span class="o">.</span><span class="n">_sticker_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></pre></div>
+      </div>
+
+      <div data-line="74" class="source__line">
+        <div data-line="74" id="line-74" class="source__line-number"><pre>74</pre></div>
+        <div data-line="74" class="source__line-content">
+            <pre class="highlight">        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></pre></div>
+      </div>
+
+      <div data-line="75" class="source__line">
+        <div data-line="75" id="line-75" class="source__line-number"><pre>75</pre></div>
+        <div data-line="75" class="source__line-content">
+            <pre class="highlight">        <span class="bp">self</span><span class="o">.</span><span class="n">_fw_ver</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">fw_ver</span></pre></div>
+      </div>
+
+      <div data-line="76" class="source__line">
+        <div data-line="76" id="line-76" class="source__line-number"><pre>76</pre></div>
+        <div data-line="76" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="77" class="source__line">
+        <div data-line="77" id="line-77" class="source__line-number"><pre>77</pre></div>
+        <div data-line="77" class="source__line-content">
+            <pre class="highlight">    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="78" class="source__line">
+        <div data-line="78" id="line-78" class="source__line-number"><pre>78</pre></div>
+        <div data-line="78" class="source__line-content">
+            <pre class="highlight">        <span class="n">s</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;MidiBulb: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_ip</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sticker_id</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="si">=}</span><span class="se">\n</span><span class="s2">&quot;</span></pre></div>
+      </div>
+
+      <div data-line="79" class="source__line">
+        <div data-line="79" id="line-79" class="source__line-number"><pre>79</pre></div>
+        <div data-line="79" class="source__line-content">
+            <pre class="highlight">        <span class="k">return</span> <span class="n">s</span></pre></div>
+      </div>
+
+      <div data-line="80" class="source__line">
+        <div data-line="80" id="line-80" class="source__line-number"><pre>80</pre></div>
+        <div data-line="80" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="81" class="source__line">
+        <div data-line="81" id="line-81" class="source__line-number"><pre>81</pre></div>
+        <div data-line="81" class="source__line-content">
+            <pre class="highlight">    <span class="nd">@property</span></pre></div>
+      </div>
+
+      <div data-line="82" class="source__line">
+        <div data-line="82" id="line-82" class="source__line-number"><pre>82</pre></div>
+        <div data-line="82" class="source__line-content">
+            <pre class="highlight">    <span class="k">def</span><span class="w"> </span><span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="83" class="source__line">
+        <div data-line="83" id="line-83" class="source__line-number"><pre>83</pre></div>
+        <div data-line="83" class="source__line-content">
+            <pre class="highlight">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="84" class="source__line">
+        <div data-line="84" id="line-84" class="source__line-number"><pre>84</pre></div>
+        <div data-line="84" class="source__line-content">
+            <pre class="highlight">            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot get ID of bulb&quot;</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="85" class="source__line">
+        <div data-line="85" id="line-85" class="source__line-number"><pre>85</pre></div>
+        <div data-line="85" class="source__line-content">
+            <pre class="highlight">            <span class="k">return</span> <span class="s2">&quot;err&quot;</span></pre></div>
+      </div>
+
+      <div data-line="86" class="source__line">
+        <div data-line="86" id="line-86" class="source__line-number"><pre>86</pre></div>
+        <div data-line="86" class="source__line-content">
+            <pre class="highlight">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span></pre></div>
+      </div>
+
+      <div data-line="87" class="source__line">
+        <div data-line="87" id="line-87" class="source__line-number"><pre>87</pre></div>
+        <div data-line="87" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="88" class="source__line">
+        <div data-line="88" id="line-88" class="source__line-number"><pre>88</pre></div>
+        <div data-line="88" class="source__line-content">
+            <pre class="highlight">    <span class="nd">@property</span></pre></div>
+      </div>
+
+      <div data-line="89" class="source__line">
+        <div data-line="89" id="line-89" class="source__line-number"><pre>89</pre></div>
+        <div data-line="89" class="source__line-content">
+            <pre class="highlight">    <span class="k">def</span><span class="w"> </span><span class="nf">sticker_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="90" class="source__line">
+        <div data-line="90" id="line-90" class="source__line-number"><pre>90</pre></div>
+        <div data-line="90" class="source__line-content">
+            <pre class="highlight">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sticker_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="91" class="source__line">
+        <div data-line="91" id="line-91" class="source__line-number"><pre>91</pre></div>
+        <div data-line="91" class="source__line-content">
+            <pre class="highlight">            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot get sticker ID of bulb&quot;</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="92" class="source__line">
+        <div data-line="92" id="line-92" class="source__line-number"><pre>92</pre></div>
+        <div data-line="92" class="source__line-content">
+            <pre class="highlight">            <span class="k">return</span> <span class="s2">&quot;err&quot;</span></pre></div>
+      </div>
+
+      <div data-line="93" class="source__line">
+        <div data-line="93" id="line-93" class="source__line-number"><pre>93</pre></div>
+        <div data-line="93" class="source__line-content">
+            <pre class="highlight">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sticker_id</span></pre></div>
+      </div>
+
+      <div data-line="94" class="source__line">
+        <div data-line="94" id="line-94" class="source__line-number"><pre>94</pre></div>
+        <div data-line="94" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="95" class="source__line">
+        <div data-line="95" id="line-95" class="source__line-number"><pre>95</pre></div>
+        <div data-line="95" class="source__line-content">
+            <pre class="highlight">    <span class="nd">@sticker_id</span><span class="o">.</span><span class="n">setter</span></pre></div>
+      </div>
+
+      <div data-line="96" class="source__line">
+        <div data-line="96" id="line-96" class="source__line-number"><pre>96</pre></div>
+        <div data-line="96" class="source__line-content">
+            <pre class="highlight">    <span class="k">def</span><span class="w"> </span><span class="nf">sticker_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sticker_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="97" class="source__line">
+        <div data-line="97" id="line-97" class="source__line-number"><pre>97</pre></div>
+        <div data-line="97" class="source__line-content">
+            <pre class="highlight">        <span class="bp">self</span><span class="o">.</span><span class="n">_sticker_id</span> <span class="o">=</span> <span class="n">sticker_id</span></pre></div>
+      </div>
+
+      <div data-line="98" class="source__line">
+        <div data-line="98" id="line-98" class="source__line-number"><pre>98</pre></div>
+        <div data-line="98" class="source__line-content">
+            <pre class="highlight">        <span class="k">return</span></pre></div>
+      </div>
+
+      <div data-line="99" class="source__line">
+        <div data-line="99" id="line-99" class="source__line-number"><pre>99</pre></div>
+        <div data-line="99" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="100" class="source__line">
+        <div data-line="100" id="line-100" class="source__line-number"><pre>100</pre></div>
+        <div data-line="100" class="source__line-content">
+            <pre class="highlight">    <span class="nd">@property</span></pre></div>
+      </div>
+
+      <div data-line="101" class="source__line">
+        <div data-line="101" id="line-101" class="source__line-number"><pre>101</pre></div>
+        <div data-line="101" class="source__line-content">
+            <pre class="highlight">    <span class="k">def</span><span class="w"> </span><span class="nf">channel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="102" class="source__line">
+        <div data-line="102" id="line-102" class="source__line-number"><pre>102</pre></div>
+        <div data-line="102" class="source__line-content">
+            <pre class="highlight">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="103" class="source__line">
+        <div data-line="103" id="line-103" class="source__line-number"><pre>103</pre></div>
+        <div data-line="103" class="source__line-content">
+            <pre class="highlight">            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot get channel of bulb&quot;</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="104" class="source__line">
+        <div data-line="104" id="line-104" class="source__line-number"><pre>104</pre></div>
+        <div data-line="104" class="source__line-content">
+            <pre class="highlight">            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span></pre></div>
+      </div>
+
+      <div data-line="105" class="source__line">
+        <div data-line="105" id="line-105" class="source__line-number"><pre>105</pre></div>
+        <div data-line="105" class="source__line-content">
+            <pre class="highlight">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span></pre></div>
+      </div>
+
+      <div data-line="106" class="source__line">
+        <div data-line="106" id="line-106" class="source__line-number"><pre>106</pre></div>
+        <div data-line="106" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="107" class="source__line">
+        <div data-line="107" id="line-107" class="source__line-number"><pre>107</pre></div>
+        <div data-line="107" class="source__line-content">
+            <pre class="highlight">    <span class="nd">@channel</span><span class="o">.</span><span class="n">setter</span></pre></div>
+      </div>
+
+      <div data-line="108" class="source__line">
+        <div data-line="108" id="line-108" class="source__line-number"><pre>108</pre></div>
+        <div data-line="108" class="source__line-content">
+            <pre class="highlight">    <span class="k">def</span><span class="w"> </span><span class="nf">channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ch</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="109" class="source__line">
+        <div data-line="109" id="line-109" class="source__line-number"><pre>109</pre></div>
+        <div data-line="109" class="source__line-content">
+            <pre class="highlight">        <span class="k">if</span> <span class="p">(</span><span class="n">ch</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">ch</span> <span class="o">&gt;</span> <span class="n">C</span><span class="o">.</span><span class="n">CHANNEL_COUNT</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span></pre></div>
+      </div>
+
+      <div data-line="110" class="source__line">
+        <div data-line="110" id="line-110" class="source__line-number"><pre>110</pre></div>
+        <div data-line="110" class="source__line-content">
+            <pre class="highlight">            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span></pre></div>
+      </div>
+
+      <div data-line="111" class="source__line">
+        <div data-line="111" id="line-111" class="source__line-number"><pre>111</pre></div>
+        <div data-line="111" class="source__line-content">
+            <pre class="highlight">                <span class="sa">f</span><span class="s2">&quot;Invalid channel </span><span class="si">{</span><span class="n">ch</span><span class="si">}</span><span class="s2"> for bulb </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">. Expected 0..</span><span class="si">{</span><span class="n">C</span><span class="o">.</span><span class="n">CHANNEL_COUNT</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">, saturating to </span><span class="si">{</span><span class="n">C</span><span class="o">.</span><span class="n">CHANNEL_COUNT</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="112" class="source__line">
+        <div data-line="112" id="line-112" class="source__line-number"><pre>112</pre></div>
+        <div data-line="112" class="source__line-content">
+            <pre class="highlight">            <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">CHANNEL_COUNT</span> <span class="o">-</span> <span class="mi">1</span></pre></div>
+      </div>
+
+      <div data-line="113" class="source__line">
+        <div data-line="113" id="line-113" class="source__line-number"><pre>113</pre></div>
+        <div data-line="113" class="source__line-content">
+            <pre class="highlight">        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">ch</span></pre></div>
+      </div>
+
+      <div data-line="114" class="source__line">
+        <div data-line="114" id="line-114" class="source__line-number"><pre>114</pre></div>
+        <div data-line="114" class="source__line-content">
+            <pre class="highlight">        <span class="k">return</span></pre></div>
+      </div>
+
+      <div data-line="115" class="source__line">
+        <div data-line="115" id="line-115" class="source__line-number"><pre>115</pre></div>
+        <div data-line="115" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="116" class="source__line">
+        <div data-line="116" id="line-116" class="source__line-number"><pre>116</pre></div>
+        <div data-line="116" class="source__line-content">
+            <pre class="highlight">    <span class="nd">@staticmethod</span></pre></div>
+      </div>
+
+      <div data-line="117" class="source__line">
+        <div data-line="117" id="line-117" class="source__line-number"><pre>117</pre></div>
+        <div data-line="117" class="source__line-content">
+            <pre class="highlight">    <span class="k">def</span><span class="w"> </span><span class="nf">discover</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;MidiBulb&quot;</span><span class="p">]:</span></pre></div>
+      </div>
+
+      <div data-line="118" class="source__line">
+        <div data-line="118" id="line-118" class="source__line-number"><pre>118</pre></div>
+        <div data-line="118" class="source__line-content">
+            <pre class="highlight"><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span></pre></div>
+      </div>
+
+      <div data-line="119" class="source__line">
+        <div data-line="119" id="line-119" class="source__line-number"><pre>119</pre></div>
+        <div data-line="119" class="source__line-content">
+            <pre class="highlight"><span class="sd">        Discover available bulbs and return a list of MidiBulb objects.</span></pre></div>
+      </div>
+
+      <div data-line="120" class="source__line">
+        <div data-line="120" id="line-120" class="source__line-number"><pre>120</pre></div>
+        <div data-line="120" class="source__line-content">
+            <pre class="highlight"><span class="sd">        &quot;&quot;&quot;</span></pre></div>
+      </div>
+
+      <div data-line="121" class="source__line">
+        <div data-line="121" id="line-121" class="source__line-number"><pre>121</pre></div>
+        <div data-line="121" class="source__line-content">
+            <pre class="highlight">        <span class="n">midi_bulbs</span> <span class="o">=</span> <span class="p">[]</span></pre></div>
+      </div>
+
+      <div data-line="122" class="source__line">
+        <div data-line="122" id="line-122" class="source__line-number"><pre>122</pre></div>
+        <div data-line="122" class="source__line-content">
+            <pre class="highlight">        <span class="k">for</span> <span class="n">yeelight_bulb</span> <span class="ow">in</span> <span class="n">get_discovered</span><span class="p">():</span></pre></div>
+      </div>
+
+      <div data-line="123" class="source__line">
+        <div data-line="123" id="line-123" class="source__line-number"><pre>123</pre></div>
+        <div data-line="123" class="source__line-content">
+            <pre class="highlight">            <span class="n">midi_bulbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MidiBulb</span><span class="p">(</span><span class="n">yeelight_bulb</span><span class="p">[</span><span class="n">CAPABILITIES</span><span class="p">][</span><span class="n">ID</span><span class="p">]))</span></pre></div>
+      </div>
+
+      <div data-line="124" class="source__line">
+        <div data-line="124" id="line-124" class="source__line-number"><pre>124</pre></div>
+        <div data-line="124" class="source__line-content">
+            <pre class="highlight">        <span class="k">return</span> <span class="n">midi_bulbs</span></pre></div>
+      </div>
+
+      <div data-line="125" class="source__line">
+        <div data-line="125" id="line-125" class="source__line-number"><pre>125</pre></div>
+        <div data-line="125" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="126" class="source__line">
+        <div data-line="126" id="line-126" class="source__line-number"><pre>126</pre></div>
+        <div data-line="126" class="source__line-content">
+            <pre class="highlight">    <span class="nd">@contextmanager</span></pre></div>
+      </div>
+
+      <div data-line="127" class="source__line">
+        <div data-line="127" id="line-127" class="source__line-number"><pre>127</pre></div>
+        <div data-line="127" class="source__line-content">
+            <pre class="highlight">    <span class="k">def</span><span class="w"> </span><span class="nf">distinguish</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span></pre></div>
+      </div>
+
+      <div data-line="128" class="source__line">
+        <div data-line="128" id="line-128" class="source__line-number"><pre>128</pre></div>
+        <div data-line="128" class="source__line-content">
+            <pre class="highlight"><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span></pre></div>
+      </div>
+
+      <div data-line="129" class="source__line">
+        <div data-line="129" id="line-129" class="source__line-number"><pre>129</pre></div>
+        <div data-line="129" class="source__line-content">
+            <pre class="highlight"><span class="sd">        Helper function, that lights up the bulb for context.</span></pre></div>
+      </div>
+
+      <div data-line="130" class="source__line">
+        <div data-line="130" id="line-130" class="source__line-number"><pre>130</pre></div>
+        <div data-line="130" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="131" class="source__line">
+        <div data-line="131" id="line-131" class="source__line-number"><pre>131</pre></div>
+        <div data-line="131" class="source__line-content">
+            <pre class="highlight"><span class="sd">        :note: Utilizes `with` statement.</span></pre></div>
+      </div>
+
+      <div data-line="132" class="source__line">
+        <div data-line="132" id="line-132" class="source__line-number"><pre>132</pre></div>
+        <div data-line="132" class="source__line-content">
+            <pre class="highlight"><span class="sd">        &quot;&quot;&quot;</span></pre></div>
+      </div>
+
+      <div data-line="133" class="source__line">
+        <div data-line="133" id="line-133" class="source__line-number"><pre>133</pre></div>
+        <div data-line="133" class="source__line-content">
+            <pre class="highlight">        <span class="k">if</span> <span class="bp">self</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="134" class="source__line">
+        <div data-line="134" id="line-134" class="source__line-number"><pre>134</pre></div>
+        <div data-line="134" class="source__line-content">
+            <pre class="highlight">            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot distinguish bulb </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="135" class="source__line">
+        <div data-line="135" id="line-135" class="source__line-number"><pre>135</pre></div>
+        <div data-line="135" class="source__line-content">
+            <pre class="highlight">            <span class="k">return</span></pre></div>
+      </div>
+
+      <div data-line="136" class="source__line">
+        <div data-line="136" id="line-136" class="source__line-number"><pre>136</pre></div>
+        <div data-line="136" class="source__line-content">
+            <pre class="highlight">        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span></pre></div>
+      </div>
+
+      <div data-line="137" class="source__line">
+        <div data-line="137" id="line-137" class="source__line-number"><pre>137</pre></div>
+        <div data-line="137" class="source__line-content">
+            <pre class="highlight">            <span class="sa">f</span><span class="s2">&quot;Distinguishing bulb </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> with sticker ID </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sticker_id</span><span class="si">}</span><span class="s2"> in channel </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="138" class="source__line">
+        <div data-line="138" id="line-138" class="source__line-number"><pre>138</pre></div>
+        <div data-line="138" class="source__line-content">
+            <pre class="highlight">        <span class="bp">self</span><span class="o">.</span><span class="n">turn_on</span><span class="p">()</span></pre></div>
+      </div>
+
+      <div data-line="139" class="source__line">
+        <div data-line="139" id="line-139" class="source__line-number"><pre>139</pre></div>
+        <div data-line="139" class="source__line-content">
+            <pre class="highlight">        <span class="bp">self</span><span class="o">.</span><span class="n">set_rgb</span><span class="p">(</span><span class="o">*</span><span class="n">C</span><span class="o">.</span><span class="n">DISTINGUISH_COLOR</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="140" class="source__line">
+        <div data-line="140" id="line-140" class="source__line-number"><pre>140</pre></div>
+        <div data-line="140" class="source__line-content">
+            <pre class="highlight">        <span class="bp">self</span><span class="o">.</span><span class="n">set_brightness</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="141" class="source__line">
+        <div data-line="141" id="line-141" class="source__line-number"><pre>141</pre></div>
+        <div data-line="141" class="source__line-content">
+            <pre class="highlight">        <span class="k">yield</span></pre></div>
+      </div>
+
+      <div data-line="142" class="source__line">
+        <div data-line="142" id="line-142" class="source__line-number"><pre>142</pre></div>
+        <div data-line="142" class="source__line-content">
+            <pre class="highlight">        <span class="bp">self</span><span class="o">.</span><span class="n">turn_off</span><span class="p">()</span></pre></div>
+      </div>
+
+      <div data-line="143" class="source__line">
+        <div data-line="143" id="line-143" class="source__line-number"><pre>143</pre></div>
+        <div data-line="143" class="source__line-content">
+            <pre class="highlight">        <span class="k">return</span></pre></div>
+      </div>
+
+      <div data-line="144" class="source__line">
+        <div data-line="144" id="line-144" class="source__line-number"><pre>144</pre></div>
+        <div data-line="144" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="145" class="source__line">
+        <div data-line="145" id="line-145" class="source__line-number"><pre>145</pre></div>
+        <div data-line="145" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="146" class="source__line">
+        <div data-line="146" id="line-146" class="source__line-number"><pre>146</pre></div>
+        <div data-line="146" class="source__line-content">
+            <pre class="highlight"><span class="k">def</span><span class="w"> </span><span class="nf">to_yaml</span><span class="p">(</span><span class="n">bulb_in_channel</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">MidiBulb</span><span class="p">]],</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;config.yml&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="147" class="source__line">
+        <div data-line="147" id="line-147" class="source__line-number"><pre>147</pre></div>
+        <div data-line="147" class="source__line-content">
+            <pre class="highlight">    <span class="n">yaml_formated</span> <span class="o">=</span> <span class="p">[]</span></pre></div>
+      </div>
+
+      <div data-line="148" class="source__line">
+        <div data-line="148" id="line-148" class="source__line-number"><pre>148</pre></div>
+        <div data-line="148" class="source__line-content">
+            <pre class="highlight">    <span class="k">for</span> <span class="n">bulbs</span> <span class="ow">in</span> <span class="n">bulb_in_channel</span><span class="o">.</span><span class="n">values</span><span class="p">():</span></pre></div>
+      </div>
+
+      <div data-line="149" class="source__line">
+        <div data-line="149" id="line-149" class="source__line-number"><pre>149</pre></div>
+        <div data-line="149" class="source__line-content">
+            <pre class="highlight">        <span class="k">for</span> <span class="n">bulb</span> <span class="ow">in</span> <span class="n">bulbs</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="150" class="source__line">
+        <div data-line="150" id="line-150" class="source__line-number"><pre>150</pre></div>
+        <div data-line="150" class="source__line-content">
+            <pre class="highlight">            <span class="n">yaml_formated</span><span class="o">.</span><span class="n">append</span><span class="p">(</span></pre></div>
+      </div>
+
+      <div data-line="151" class="source__line">
+        <div data-line="151" id="line-151" class="source__line-number"><pre>151</pre></div>
+        <div data-line="151" class="source__line-content">
+            <pre class="highlight">                <span class="p">{</span></pre></div>
+      </div>
+
+      <div data-line="152" class="source__line">
+        <div data-line="152" id="line-152" class="source__line-number"><pre>152</pre></div>
+        <div data-line="152" class="source__line-content">
+            <pre class="highlight">                    <span class="s2">&quot;bulb_id&quot;</span><span class="p">:</span> <span class="n">bulb</span><span class="o">.</span><span class="n">id</span><span class="p">,</span></pre></div>
+      </div>
+
+      <div data-line="153" class="source__line">
+        <div data-line="153" id="line-153" class="source__line-number"><pre>153</pre></div>
+        <div data-line="153" class="source__line-content">
+            <pre class="highlight">                    <span class="s2">&quot;sticker&quot;</span><span class="p">:</span> <span class="n">bulb</span><span class="o">.</span><span class="n">sticker_id</span><span class="p">,</span></pre></div>
+      </div>
+
+      <div data-line="154" class="source__line">
+        <div data-line="154" id="line-154" class="source__line-number"><pre>154</pre></div>
+        <div data-line="154" class="source__line-content">
+            <pre class="highlight">                    <span class="s2">&quot;channel&quot;</span><span class="p">:</span> <span class="n">bulb</span><span class="o">.</span><span class="n">channel</span><span class="p">,</span></pre></div>
+      </div>
+
+      <div data-line="155" class="source__line">
+        <div data-line="155" id="line-155" class="source__line-number"><pre>155</pre></div>
+        <div data-line="155" class="source__line-content">
+            <pre class="highlight">                    <span class="s2">&quot;firmware&quot;</span><span class="p">:</span> <span class="n">bulb</span><span class="o">.</span><span class="n">_fw_ver</span></pre></div>
+      </div>
+
+      <div data-line="156" class="source__line">
+        <div data-line="156" id="line-156" class="source__line-number"><pre>156</pre></div>
+        <div data-line="156" class="source__line-content">
+            <pre class="highlight">                <span class="p">}</span></pre></div>
+      </div>
+
+      <div data-line="157" class="source__line">
+        <div data-line="157" id="line-157" class="source__line-number"><pre>157</pre></div>
+        <div data-line="157" class="source__line-content">
+            <pre class="highlight">            <span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="158" class="source__line">
+        <div data-line="158" id="line-158" class="source__line-number"><pre>158</pre></div>
+        <div data-line="158" class="source__line-content">
+            <pre class="highlight">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="159" class="source__line">
+        <div data-line="159" id="line-159" class="source__line-number"><pre>159</pre></div>
+        <div data-line="159" class="source__line-content">
+            <pre class="highlight">        <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">yaml_formated</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="160" class="source__line">
+        <div data-line="160" id="line-160" class="source__line-number"><pre>160</pre></div>
+        <div data-line="160" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="161" class="source__line">
+        <div data-line="161" id="line-161" class="source__line-number"><pre>161</pre></div>
+        <div data-line="161" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="162" class="source__line">
+        <div data-line="162" id="line-162" class="source__line-number"><pre>162</pre></div>
+        <div data-line="162" class="source__line-content">
+            <pre class="highlight"><span class="k">def</span><span class="w"> </span><span class="nf">from_yaml</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;config.yml&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">MidiBulb</span><span class="p">]]:</span></pre></div>
+      </div>
+
+      <div data-line="163" class="source__line">
+        <div data-line="163" id="line-163" class="source__line-number"><pre>163</pre></div>
+        <div data-line="163" class="source__line-content">
+            <pre class="highlight">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="164" class="source__line">
+        <div data-line="164" id="line-164" class="source__line-number"><pre>164</pre></div>
+        <div data-line="164" class="source__line-content">
+            <pre class="highlight">        <span class="n">yaml_formated</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="165" class="source__line">
+        <div data-line="165" id="line-165" class="source__line-number"><pre>165</pre></div>
+        <div data-line="165" class="source__line-content">
+            <pre class="highlight">    <span class="n">ret</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">MidiBulb</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span></pre></div>
+      </div>
+
+      <div data-line="166" class="source__line">
+        <div data-line="166" id="line-166" class="source__line-number"><pre>166</pre></div>
+        <div data-line="166" class="source__line-content">
+            <pre class="highlight">    <span class="k">for</span> <span class="n">yaml_bulb</span> <span class="ow">in</span> <span class="n">yaml_formated</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="167" class="source__line">
+        <div data-line="167" id="line-167" class="source__line-number"><pre>167</pre></div>
+        <div data-line="167" class="source__line-content">
+            <pre class="highlight">        <span class="n">bulb_id</span> <span class="o">=</span> <span class="n">yaml_bulb</span><span class="p">[</span><span class="s2">&quot;bulb_id&quot;</span><span class="p">]</span></pre></div>
+      </div>
+
+      <div data-line="168" class="source__line">
+        <div data-line="168" id="line-168" class="source__line-number"><pre>168</pre></div>
+        <div data-line="168" class="source__line-content">
+            <pre class="highlight">        <span class="n">sticker_id</span> <span class="o">=</span> <span class="n">yaml_bulb</span><span class="p">[</span><span class="s2">&quot;sticker&quot;</span><span class="p">]</span></pre></div>
+      </div>
+
+      <div data-line="169" class="source__line">
+        <div data-line="169" id="line-169" class="source__line-number"><pre>169</pre></div>
+        <div data-line="169" class="source__line-content">
+            <pre class="highlight">        <span class="n">channel</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">yaml_bulb</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">])</span></pre></div>
+      </div>
+
+      <div data-line="170" class="source__line">
+        <div data-line="170" id="line-170" class="source__line-number"><pre>170</pre></div>
+        <div data-line="170" class="source__line-content">
+            <pre class="highlight">        <span class="k">if</span> <span class="n">channel</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ret</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span></pre></div>
+      </div>
+
+      <div data-line="171" class="source__line">
+        <div data-line="171" id="line-171" class="source__line-number"><pre>171</pre></div>
+        <div data-line="171" class="source__line-content">
+            <pre class="highlight">            <span class="n">ret</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span></pre></div>
+      </div>
+
+      <div data-line="172" class="source__line">
+        <div data-line="172" id="line-172" class="source__line-number"><pre>172</pre></div>
+        <div data-line="172" class="source__line-content">
+            <pre class="highlight">        <span class="n">midibulb</span> <span class="o">=</span> <span class="n">MidiBulb</span><span class="p">(</span><span class="n">bulb_id</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="173" class="source__line">
+        <div data-line="173" id="line-173" class="source__line-number"><pre>173</pre></div>
+        <div data-line="173" class="source__line-content">
+            <pre class="highlight">        <span class="n">midibulb</span><span class="o">.</span><span class="n">sticker_id</span> <span class="o">=</span> <span class="n">sticker_id</span></pre></div>
+      </div>
+
+      <div data-line="174" class="source__line">
+        <div data-line="174" id="line-174" class="source__line-number"><pre>174</pre></div>
+        <div data-line="174" class="source__line-content">
+            <pre class="highlight">        <span class="n">midibulb</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">channel</span></pre></div>
+      </div>
+
+      <div data-line="175" class="source__line">
+        <div data-line="175" id="line-175" class="source__line-number"><pre>175</pre></div>
+        <div data-line="175" class="source__line-content">
+            <pre class="highlight">        <span class="n">ret</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">midibulb</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="176" class="source__line">
+        <div data-line="176" id="line-176" class="source__line-number"><pre>176</pre></div>
+        <div data-line="176" class="source__line-content">
+            <pre class="highlight">    <span class="k">return</span> <span class="n">ret</span></pre></div>
+      </div>
+
+      <div data-line="177" class="source__line">
+        <div data-line="177" id="line-177" class="source__line-number"><pre>177</pre></div>
+        <div data-line="177" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="178" class="source__line">
+        <div data-line="178" id="line-178" class="source__line-number"><pre>178</pre></div>
+        <div data-line="178" class="source__line-content"><pre data-state="empty" style="user-select: none">&nbsp;</pre></div>
+      </div>
+
+      <div data-line="179" class="source__line">
+        <div data-line="179" id="line-179" class="source__line-number"><pre>179</pre></div>
+        <div data-line="179" class="source__line-content">
+            <pre class="highlight"><span class="nd">@contextmanager</span></pre></div>
+      </div>
+
+      <div data-line="180" class="source__line">
+        <div data-line="180" id="line-180" class="source__line-number"><pre>180</pre></div>
+        <div data-line="180" class="source__line-content">
+            <pre class="highlight"><span class="k">def</span><span class="w"> </span><span class="nf">distinguish_channel</span><span class="p">(</span><span class="n">bulbs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MidiBulb</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span></pre></div>
+      </div>
+
+      <div data-line="181" class="source__line">
+        <div data-line="181" id="line-181" class="source__line-number"><pre>181</pre></div>
+        <div data-line="181" class="source__line-content">
+            <pre class="highlight">    <span class="k">for</span> <span class="n">bulb</span> <span class="ow">in</span> <span class="n">bulbs</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="182" class="source__line">
+        <div data-line="182" id="line-182" class="source__line-number"><pre>182</pre></div>
+        <div data-line="182" class="source__line-content">
+            <pre class="highlight">        <span class="n">bulb</span><span class="o">.</span><span class="n">turn_on</span><span class="p">()</span></pre></div>
+      </div>
+
+      <div data-line="183" class="source__line">
+        <div data-line="183" id="line-183" class="source__line-number"><pre>183</pre></div>
+        <div data-line="183" class="source__line-content">
+            <pre class="highlight">        <span class="n">bulb</span><span class="o">.</span><span class="n">set_rgb</span><span class="p">(</span><span class="o">*</span><span class="n">C</span><span class="o">.</span><span class="n">DISTINGUISH_COLOR</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="184" class="source__line">
+        <div data-line="184" id="line-184" class="source__line-number"><pre>184</pre></div>
+        <div data-line="184" class="source__line-content">
+            <pre class="highlight">        <span class="n">bulb</span><span class="o">.</span><span class="n">set_brightness</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span></pre></div>
+      </div>
+
+      <div data-line="185" class="source__line">
+        <div data-line="185" id="line-185" class="source__line-number"><pre>185</pre></div>
+        <div data-line="185" class="source__line-content">
+            <pre class="highlight">    <span class="k">yield</span></pre></div>
+      </div>
+
+      <div data-line="186" class="source__line">
+        <div data-line="186" id="line-186" class="source__line-number"><pre>186</pre></div>
+        <div data-line="186" class="source__line-content">
+            <pre class="highlight">    <span class="k">for</span> <span class="n">bulb</span> <span class="ow">in</span> <span class="n">bulbs</span><span class="p">:</span></pre></div>
+      </div>
+
+      <div data-line="187" class="source__line">
+        <div data-line="187" id="line-187" class="source__line-number"><pre>187</pre></div>
+        <div data-line="187" class="source__line-content">
+            <pre class="highlight">        <span class="n">bulb</span><span class="o">.</span><span class="n">turn_off</span><span class="p">()</span></pre></div>
+      </div></div></div>
+</div>
+
+    </main>
+
+    <footer class="layout_footer">
+      <div class="footer">
+        Built with
+        <a
+          class="strictdoc__link"
+          href="https://github.com/strictdoc-project/strictdoc"
+          target="_blank"
+        >StrictDoc</a>
+        <a
+          class="strictdoc__version"
+          href="https://github.com/strictdoc-project/strictdoc/releases/tag/0.14.0"
+          target="_blank"
+        >
+          <svg height="16" viewBox="0 0 16 16" version="1.1" width="16" >
+            <path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"/>
+          </svg>
+          0.14.0
+        </a>
+      </div>
+    </footer>
+
+    <aside class="layout_aside">
+      
+    </aside>
+
+  </div>
+  
+  <div id="modal"></div>
+  <div id="confirm"></div>
+  
+
+</body>
+</html>
