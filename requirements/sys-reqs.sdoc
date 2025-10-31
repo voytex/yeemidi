@@ -1,0 +1,37 @@
+[DOCUMENT]
+TITLE: System Requirements
+
+[REQUIREMENT]
+UID: YMD-SYS-1
+STATEMENT: >>>
+Application shall provide functionality to control Yeelight RGB Bulbs using MIDI (mainly from SW loopback bus). 
+Particular MIDI messages and their effect are described in [LINK: YMD-PROTO-1]
+<<<
+
+[REQUIREMENT]
+UID: YMD-SYS-2
+STATEMENT: >>>
+Application shall be able to control Yeelight bulbs connected to the same local area network as the computer that runs this application. 
+<<<
+
+[REQUIREMENT]
+UID: YMD-SYS-3
+STATEMENT: >>>
+Application shall be able to distinguish bulbs based on their **unique ID** and shall not rely on IP addresses.
+<<<
+
+[REQUIREMENT]
+UID: YMD-SYS-4
+STATEMENT: >>>
+Application shall be able to channel bulbs. Bulbs in a single channel shall receive commands ideally at the same time.
+<<<
+
+[REQUIREMENT]
+UID: YMD-SYS-5
+STATEMENT: >>>
+Application shall provide functionality for 'sound check' mode where only particular bulbs or bulbs 
+from a particular channel would light up to be positioned in the venue space correctly.
+<<<
+
+
+

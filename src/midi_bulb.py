@@ -21,8 +21,10 @@ def get_discovered() -> List[Dict]:
     """
     Returns the discovered list of dictionaries describing bulbs.
     Else, queries the network for available bulbs.
-
+    
     :return: List of Dicts or None
+
+    @relation(YMD-SYS-3, scope=function)
     """
     global __discovered
     if __discovered is None:

@@ -1,0 +1,21 @@
+name: Build documentation and update the GitHub Pages
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: linux
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - run: pip install -r ./requirements.txt
+      - run: strictdoc export .
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output/html
+    

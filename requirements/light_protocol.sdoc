@@ -1,0 +1,94 @@
+[DOCUMENT]
+TITLE: Light Protocol
+
+[REQUIREMENT]
+UID: YMD-PROTO-1
+TITLE: Light protocol
+STATEMENT: >>>
+
+.. list-table::
+  :width: 100 %
+  :widths: 10 10 10 35 35
+  :header-rows: 1
+
+  * - MIDI Chnl.
+    
+    - MIDI Note
+    
+    - Light Event
+    
+    - Argument (MIDI Event)
+    
+    - Comment
+
+  * -  1 
+  
+    - :code:`0` 
+    
+    - BLACKOUT 
+    
+    - :code:`duration: 0v=30ms 100+v=10_000ms`
+    
+    - All bulbs shut down 
+  
+  * - any 
+  
+    - :code:`12` 
+    
+    - GO 
+    
+    - :code:`duration: 0v=30ms 100+v=10_000ms` 
+    
+    - Bulbs within given channel receive preset command 
+
+  * - any 
+  
+    - :code:`13` 
+   
+    - BRIGHTNESS 
+   
+    - :code:`brightness: 0v=0 100+v=100` 
+    
+    - Set brightness to bulbs within given that channel on the next **GO**
+ 
+  * - any 
+  
+    - :code:`14` 
+    
+    - WHITE 
+    
+    - :code:`temperature: 0v=2700K 127v=5500K` 
+    
+    - Set bulbs to white mode and preset temperature on the next **GO**
+ 
+  * - any 
+  
+    - :code:`15`
+    
+    - RED 
+    
+    - :code:`red: 0v=0 127v=127` 
+    
+    - Set bulbs to RGB mode and register this portion of red color on the next **GO**
+ 
+  * - any 
+  
+    - :code:`16`
+    
+    - GREEN 
+    
+    - :code:`red: 0v=0 127v=127` 
+    
+    - Set bulbs to RGB mode and register this portion of green color on the next **GO**
+ 
+  * - any 
+  
+    - :code:`17` 
+    
+    - BLUE 
+    
+    - :code:`red: 0v=0 127v=127`
+    
+    - Set bulbs to RGB mode and register this portion of blue color on the next **GO**
+     
+<<<
